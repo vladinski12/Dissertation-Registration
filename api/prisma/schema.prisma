@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  name      String?
+  password  String
+  role      String
+  Professor Professor?
+  Student   Student?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Professor {
+  id                   Int                    @id @default(autoincrement())
+  user                 User                   @relation(fields: [userId], references: [id])
+  userId               Int                    @unique @map("user_id")
+  RegistrationSessions RegistrationSessions[]
+  DissertationRequests DissertationRequests[]
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+}
+
+model Student {
+  id                   Int                    @id @default(autoincrement())
+  user                 User                   @relation(fields: [userId], references: [id])
+  userId               Int                    @unique @map("user_id")
+  DissertationRequests DissertationRequests[]
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+}
+
+model RegistrationSessions {
+  id          Int        @id @default(autoincrement())
+  startDate   DateTime
+  endDate     DateTime
+  professor   Professor? @relation(fields: [professorId], references: [id], onDelete: SetNull)
+  professorId Int?       @map("professor_id")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model DissertationRequests {
+  id              Int       @id @default(autoincrement())
+  status          String    @default("PENDING_APPROVAL")
+  declinedReason  String?
+  student         Student   @relation(fields: [studentId], references: [id])
+  studentId       Int       @map("student_id")
+  professor       Professor @relation(fields: [professorId], references: [id])
+  professorId     Int       @map("professor_id")
+  studentFile     Files?    @relation("DissertationRequestStudentFile", fields: [studentFileId], references: [id])
+  studentFileId   Int?      @unique
+  professorFile   Files?    @relation("DissertationRequestProfessorFile", fields: [professorFileId], references: [id])
+  professorFileId Int?      @unique
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Files {
+  id                               Int                   @id @default(autoincrement())
+  filename                         String
+  path                             String
+  dissertationRequestStudentFile   DissertationRequests? @relation("DissertationRequestStudentFile")
+  studentFileId                    Int?
+  dissertationRequestProfessorFile DissertationRequests? @relation("DissertationRequestProfessorFile")
+  professorFileId                  Int?                  @unique
+  createdAt                        DateTime              @default(now())
+  updatedAt                        DateTime              @updatedAt
+}
