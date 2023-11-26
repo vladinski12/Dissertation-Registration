@@ -1,10 +1,10 @@
-import Prisma from "../../prisma.js";
+import Prisma from '../../prisma.js';
 import {
   DissertationRequestStatus,
   MAX_NUMBER_OF_STUDENTS_PER_PROFESSOR,
   UserRole,
-} from "../../utils/constants.js";
-import HttpException from "../../utils/http-exception.js";
+} from '../../utils/constants.js';
+import HttpException from '../../utils/http-exception.js';
 
 export async function createDissertationRequest(studentId, professorId) {
   const student = await Prisma.student.findUnique({
@@ -16,7 +16,7 @@ export async function createDissertationRequest(studentId, professorId) {
     },
   });
   if (!student) {
-    throw new HttpException("Student not found", 404);
+    throw new HttpException('Student not found', 404);
   }
 
   if (
@@ -26,7 +26,7 @@ export async function createDissertationRequest(studentId, professorId) {
     ).length > 0
   ) {
     throw new HttpException(
-      "Student already has approved dissertation request",
+      'Student already has approved dissertation request',
       400,
     );
   }
@@ -41,7 +41,7 @@ export async function createDissertationRequest(studentId, professorId) {
     },
   });
   if (!professor) {
-    throw new HttpException("Professor not found");
+    throw new HttpException('Professor not found');
   }
 
   const existingDissertationRequest =
@@ -54,7 +54,7 @@ export async function createDissertationRequest(studentId, professorId) {
 
   if (existingDissertationRequest) {
     throw new HttpException(
-      "Dissertation request already exists for this student and professor",
+      'Dissertation request already exists for this student and professor',
       400,
     );
   }
@@ -65,7 +65,7 @@ export async function createDissertationRequest(studentId, professorId) {
         dissertationRequest.status === DissertationRequestStatus.APPROVED,
     ).length >= MAX_NUMBER_OF_STUDENTS_PER_PROFESSOR
   ) {
-    throw new HttpException("Professor is full", 400);
+    throw new HttpException('Professor is full', 400);
   }
 
   if (
@@ -74,7 +74,7 @@ export async function createDissertationRequest(studentId, professorId) {
         session.endDate > new Date() && session.startDate < new Date(),
     )
   ) {
-    throw new HttpException("Professor is not available", 400);
+    throw new HttpException('Professor is not available', 400);
   }
 
   return Prisma.dissertationRequests.create({
@@ -101,7 +101,7 @@ export async function getDissertationRequests(userId) {
   });
 
   if (!user) {
-    throw new HttpException("User not found", 404);
+    throw new HttpException('User not found', 404);
   }
 
   if (user.role === UserRole.PROFESSOR) {
@@ -119,7 +119,7 @@ export async function getDissertationRequests(userId) {
       },
     });
     if (!professor) {
-      throw new HttpException("Professor not found", 404);
+      throw new HttpException('Professor not found', 404);
     }
 
     return professor.DissertationRequests;
@@ -138,12 +138,12 @@ export async function getDissertationRequests(userId) {
       },
     });
     if (!student) {
-      throw new HttpException("Student not found", 404);
+      throw new HttpException('Student not found', 404);
     }
 
     return student.dissertationRequests;
   } else {
-    throw new HttpException("Invalid user role", 400);
+    throw new HttpException('Invalid user role', 400);
   }
 }
 
@@ -157,7 +157,7 @@ export async function handlePreliminaryDissertationRequest(
     status !== DissertationRequestStatus.APPROVED &&
     status !== DissertationRequestStatus.DECLINED
   ) {
-    throw new HttpException("Invalid status", 400);
+    throw new HttpException('Invalid status', 400);
   }
 
   const professor = await Prisma.professor.findUnique({
@@ -170,7 +170,7 @@ export async function handlePreliminaryDissertationRequest(
   });
 
   if (!professor) {
-    throw new HttpException("Professor not found", 404);
+    throw new HttpException('Professor not found', 404);
   }
 
   const dissertationRequest = professor.DissertationRequests.find(
@@ -178,13 +178,13 @@ export async function handlePreliminaryDissertationRequest(
   );
 
   if (!dissertationRequest) {
-    throw new HttpException("Dissertation request not found", 404);
+    throw new HttpException('Dissertation request not found', 404);
   }
 
   if (
     dissertationRequest.status !== DissertationRequestStatus.PENDING_APPROVAL
   ) {
-    throw new HttpException("Dissertation request is not pending", 400);
+    throw new HttpException('Dissertation request is not pending', 400);
   }
 
   if (
@@ -194,7 +194,7 @@ export async function handlePreliminaryDissertationRequest(
         dissertationRequest.status === DissertationRequestStatus.APPROVED,
     ).length >= MAX_NUMBER_OF_STUDENTS_PER_PROFESSOR
   ) {
-    throw new HttpException("Professor is full", 400);
+    throw new HttpException('Professor is full', 400);
   }
 
   return Prisma.dissertationRequests.update({
@@ -224,7 +224,7 @@ export async function uploadDissertationRequest(
   });
 
   if (!student) {
-    throw new HttpException("Student not found", 404);
+    throw new HttpException('Student not found', 404);
   }
 
   const dissertationRequest = student.dissertationRequests.find(
@@ -237,11 +237,11 @@ export async function uploadDissertationRequest(
       (dissertationRequest) => dissertationRequest.id !== dissertationRequestId,
     )
   ) {
-    throw new HttpException("Dissertation request not found", 404);
+    throw new HttpException('Dissertation request not found', 404);
   }
 
   if (dissertationRequest.status !== DissertationRequestStatus.APPROVED) {
-    throw new HttpException("Dissertation request is not approved", 400);
+    throw new HttpException('Dissertation request is not approved', 400);
   }
 
   const file = await Prisma.file.create({
@@ -278,7 +278,7 @@ export async function handleUploadedDissertationRequest(
     status !== DissertationRequestStatus.APPROVED_REJECTED &&
     status !== DissertationRequestStatus.FILE_UPLOADED_BY_PROFESSOR
   ) {
-    throw new HttpException("Invalid status", 400);
+    throw new HttpException('Invalid status', 400);
   }
 
   const professor = await Prisma.professor.findUnique({
@@ -291,7 +291,7 @@ export async function handleUploadedDissertationRequest(
   });
 
   if (!professor) {
-    throw new HttpException("Professor not found", 404);
+    throw new HttpException('Professor not found', 404);
   }
 
   const dissertationRequest = professor.DissertationRequests.find(
@@ -299,13 +299,13 @@ export async function handleUploadedDissertationRequest(
   );
 
   if (!dissertationRequest) {
-    throw new HttpException("Dissertation request not found", 404);
+    throw new HttpException('Dissertation request not found', 404);
   }
 
   if (
     dissertationRequest.status !== DissertationRequestStatus.APPROVED_REJECTED
   ) {
-    throw new HttpException("Dissertation request is not pending", 400);
+    throw new HttpException('Dissertation request is not pending', 400);
   }
 
   const file = await Prisma.file.create({

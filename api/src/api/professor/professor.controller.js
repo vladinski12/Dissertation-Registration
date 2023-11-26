@@ -1,4 +1,4 @@
-import * as ProfessorService from "./professor.service.js";
+import * as ProfessorService from './professor.service.js';
 
 export async function getAllAvailableProfessors(req, res, next) {
 	try {

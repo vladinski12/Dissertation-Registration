@@ -1,5 +1,5 @@
-import { DissertationRequestStatus } from "../../utils/constants.js";
-import * as DissertationService from "./dissertation.service.js";
+import { DissertationRequestStatus } from '../../utils/constants.js';
+import * as DissertationService from './dissertation.service.js';
 
 export async function createDissertationRequest(req, res, next) {
   try {

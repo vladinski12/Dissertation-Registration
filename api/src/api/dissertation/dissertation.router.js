@@ -1,16 +1,16 @@
-import express from "express";
-import * as DissertationController from "./dissertation.controller.js";
-import AuthMiddleware from "../../utils/middlewares/auth.middleware.js";
-import { RoleMiddleware } from "../../utils/middlewares/role.middleware.js";
-import { UserRole } from "../../utils/constants.js";
-import CreateDissertationRequestValidate from "./validators/create-dissertation-request.validate.js";
-import HandleDissertationRequestValidate from "./validators/handle-dissertation-request.validate.js";
-import UploadFile from "../../storage.js";
+import express from 'express';
+import * as DissertationController from './dissertation.controller.js';
+import AuthMiddleware from '../../utils/middlewares/auth.middleware.js';
+import { RoleMiddleware } from '../../utils/middlewares/role.middleware.js';
+import { UserRole } from '../../utils/constants.js';
+import CreateDissertationRequestValidate from './validators/create-dissertation-request.validate.js';
+import HandleDissertationRequestValidate from './validators/handle-dissertation-request.validate.js';
+import UploadFile from '../../storage.js';
 
 const DissertationRouter = express.Router();
 
 DissertationRouter.get(
-  "/create-dissertation-request",
+  '/create-dissertation-request',
   AuthMiddleware,
   RoleMiddleware(UserRole.STUDENT),
   CreateDissertationRequestValidate,
@@ -18,14 +18,14 @@ DissertationRouter.get(
 );
 
 DissertationController.get(
-  "/get-dissertation-requests",
+  '/get-dissertation-requests',
   AuthMiddleware,
   RoleMiddleware([UserRole.PROFESSOR, UserRole.STUDENT]),
   DissertationController.getDissertationRequests,
 );
 
 DissertationRouter.post(
-  "/handle-preliminary-dissertation-request/:dissertationRequestId",
+  '/handle-preliminary-dissertation-request/:dissertationRequestId',
   AuthMiddleware,
   RoleMiddleware(UserRole.PROFESSOR),
   HandleDissertationRequestValidate,
@@ -33,20 +33,20 @@ DissertationRouter.post(
 );
 
 DissertationRouter.post(
-  "/upload-dissertation-request/:dissertationRequestId",
+  '/upload-dissertation-request/:dissertationRequestId',
   AuthMiddleware,
   RoleMiddleware(UserRole.STUDENT),
   HandleDissertationRequestValidate(true, true),
-  UploadFile.single("file"),
+  UploadFile.single('file'),
   DissertationController.uploadDissertationRequest,
 );
 
 DissertationRouter.post(
-  "/handle-uploaded-dissertation-request/:dissertationRequestId",
+  '/handle-uploaded-dissertation-request/:dissertationRequestId',
   AuthMiddleware,
   RoleMiddleware(UserRole.PROFESSOR),
   HandleDissertationRequestValidate(true),
-  UploadFile.single("file"),
+  UploadFile.single('file'),
   DissertationController.handleUploadedDissertationRequest,
 );
 

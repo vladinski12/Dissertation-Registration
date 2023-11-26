@@ -1,5 +1,5 @@
-import Prisma from "../../prisma.js";
-import HttpException from "../../utils/http-exception.js";
+import Prisma from '../../prisma.js';
+import HttpException from '../../utils/http-exception.js';
 
 export async function createRegistrationSession(
 	professorId,
@@ -7,11 +7,11 @@ export async function createRegistrationSession(
 	endDate,
 ) {
 	if (startDate > endDate) {
-		throw new HttpException("Start date must be before end date", 400);
+		throw new HttpException('Start date must be before end date', 400);
 	}
 
 	if (startDate < new Date()) {
-		throw new HttpException("Start date must be in the future", 400);
+		throw new HttpException('Start date must be in the future', 400);
 	}
 
 	const professor = await Prisma.professor.findUnique({
@@ -21,7 +21,7 @@ export async function createRegistrationSession(
 	});
 
 	if (!professor) {
-		throw new HttpException("Professor not found", 404);
+		throw new HttpException('Professor not found', 404);
 	}
 
 	const existingSession = await Prisma.registrationSession.findFirst({
@@ -37,7 +37,7 @@ export async function createRegistrationSession(
 	});
 
 	if (existingSession) {
-		throw new HttpException("Session is overlapping with an existing one", 400);
+		throw new HttpException('Session is overlapping with an existing one', 400);
 	}
 
 	return Prisma.registrationSession.create({

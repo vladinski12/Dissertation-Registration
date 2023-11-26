@@ -1,8 +1,8 @@
-import Prisma from "../../prisma.js";
+import Prisma from '../../prisma.js';
 import {
   DissertationRequestStatus,
   MAX_NUMBER_OF_STUDENTS_PER_PROFESSOR,
-} from "../../utils/constants.js";
+} from '../../utils/constants.js';
 
 export async function getAllAvailableProfessors() {
   return Prisma.professor

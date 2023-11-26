@@ -1,4 +1,4 @@
-import * as RegistrationSessionsService from "../registration-session/registration-session.service.js";
+import * as RegistrationSessionsService from '../registration-session/registration-session.service.js';
 
 export async function createRegistrationSession(req, res, next) {
 	try {

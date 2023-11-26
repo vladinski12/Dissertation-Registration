@@ -1,11 +1,11 @@
-import HttpException from "../../utils/http-exception.js";
-import Prisma from "../../prisma.js";
-import * as bcrypt from "bcrypt";
+import HttpException from '../../utils/http-exception.js';
+import Prisma from '../../prisma.js';
+import * as bcrypt from 'bcrypt';
 import {
 	generateAccessToken,
 	hashPassword,
-} from "../../utils/functions/auth.helpers.js";
-import { UserRole } from "../../utils/constants.js";
+} from '../../utils/functions/auth.helpers.js';
+import { UserRole } from '../../utils/constants.js';
 
 async function login({ email, password }) {
 	const user = await Prisma.user.findUnique({
@@ -14,12 +14,12 @@ async function login({ email, password }) {
 		},
 	});
 	if (!user) {
-		throw new HttpException("User not found", 401);
+		throw new HttpException('User not found', 401);
 	}
 
 	const valid = await bcrypt.compare(password, user.password);
 	if (!valid) {
-		throw new HttpException("Invalid login", 401);
+		throw new HttpException('Invalid login', 401);
 	}
 
 	return {
@@ -34,7 +34,7 @@ async function register({ email, name, password, userRole }) {
 		},
 	});
 	if (user) {
-		throw new HttpException("User already exists", 409);
+		throw new HttpException('User already exists', 409);
 	}
 	const hash = await hashPassword(password);
 
@@ -64,11 +64,11 @@ async function register({ email, name, password, userRole }) {
 			},
 		});
 	} else {
-		throw new HttpException("Invalid user role", 400);
+		throw new HttpException('Invalid user role', 400);
 	}
 
 	return {
-		message: "User created",
+		message: 'User created',
 	};
 }
 

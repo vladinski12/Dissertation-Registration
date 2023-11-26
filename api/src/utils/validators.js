@@ -1,9 +1,9 @@
-import { UserRole, DissertationRequestStatus } from "./constants.js";
+import { UserRole, DissertationRequestStatus } from './constants.js';
 
 export function isValidString(value, minLength, maxLength) {
   return (
-    typeof value === "string" &&
-    value.trim() !== "" &&
+    typeof value === 'string' &&
+    value.trim() !== '' &&
     value.length >= minLength &&
     value.length <= maxLength
   );
