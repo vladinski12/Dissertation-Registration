@@ -8,6 +8,8 @@ export const UserRole = {
   STUDENT: 'STUDENT',
 };
 
+export const UserRoleArray = ['PROFESSOR', 'STUDENT'];
+
 export const DissertationRequestStatus = {
   PENDING_APPROVAL: 'PENDING APPROVAL',
   APPROVED: 'APPROVED',
@@ -17,6 +19,13 @@ export const DissertationRequestStatus = {
   FILE_UPLOADED_BY_PROFESSOR: 'FILE UPLOADED BY PROFESSOR',
 };
 
-export const ONE_MEGABYTE = 1000000;
+export const DissertationRequestStatusArray = [
+  'PENDING APPROVAL',
+  'APPROVED',
+  'DECLINED',
+  'APPROVED_REJECTED',
+  'FILE UPLOADED BY STUDENT',
+  'FILE UPLOADED BY PROFESSOR',
+];
 
 export const MAX_NUMBER_OF_STUDENTS_PER_PROFESSOR = 5;

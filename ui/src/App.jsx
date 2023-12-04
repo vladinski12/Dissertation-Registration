@@ -1,52 +1,77 @@
-import {useCallback, useState,} from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import React, { useContext } from 'react';
+import routes from './app/routesConfig';
+import {Helmet} from 'react-helmet-async';
+import map from 'lodash/map';
+import {BrowserRouter as Router,Routes,Route,Navigate} from 'react-router-dom';
+import Navbar from './components/Navbar';
+import RoleCheckOutlet from './components/templates/RoleCheckOutlet';
+import Loading from './components/templates/Loading';
+import Login from './pages/Login';
+import { Context } from './state/context/GlobalContext/Context';
+import { APP_ROUTES } from './app/routes';
+import { Box } from '@mui/material';
+
+function ProtectedRoutes(){
+	return(
+		<>
+			<Navbar/>
+			<Routes>
+				{map(routes,(route,idx)=>(
+					<Route
+						key={ `app-route-${idx}` }
+						element={ <RoleCheckOutlet route={ route }/> }>
+						<Route 
+							{ ...route }
+							element={ 
+								<React.Fragment> 
+									<Helmet defer={ false }>
+										<title>{route?.headTitle}</title>
+									</Helmet>
+									<route.element { ...route }/>	
+								</React.Fragment> }/>
+					</Route>
+				))}
+			</Routes>
+		</>
+	);
+}
 
 function App() {
-	const [count, setCount] = useState(0);
+	const {context: {isLoggedIn,isLoading}}=useContext(Context); 
 
-	const handleClick = useCallback(() => {
-		setCount(count => count + 1);
-	});
+	function loadingHandler(next,fallback){
+		if(isLoading){
+			return (<Loading/>);
+		}
+		if(isLoggedIn){
+			return next;
+		}
+		return fallback;
+	}
 
 	return (
-		<>
-			<div>
-				<a
-					href="https://vitejs.dev"
-					target="_blank"
-					rel="noreferrer">
-					<img
-						src={ viteLogo }
-						className="logo"
-						alt="Vite logo"/>
-				</a>
-				<a
-					href="https://react.dev"
-					target="_blank"
-					rel="noreferrer">
-					<img
-						src={ reactLogo }
-						className="logo react"
-						alt="React logo"/>
-				</a>
-			</div>
-			<h1>Vite + React</h1>
-			<div className="card">
-				<button
-					type="button"
-					onClick={ handleClick }>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.jsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className="read-the-docs">
-				Click on the Vite and React logos to learn more
-			</p>
-		</>
+		<Box
+			component="div"	
+			className="App">
+			<Router>
+				<Routes>
+					<Route
+						path="/"
+						element={ loadingHandler(<Navigate
+							to={ APP_ROUTES.dissertationRequestsList }
+							replace/>,<Login/>) }/>
+					<Route
+						path="/*"
+						element={ loadingHandler(<ProtectedRoutes/>,<Navigate
+							to="/"
+							replace/>) }/>
+				</Routes>
+			</Router>
+		</Box>
 	);
 }
 

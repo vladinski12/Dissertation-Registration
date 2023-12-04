@@ -5,37 +5,35 @@ import {
 } from '../../utils/constants.js';
 
 export async function getAllAvailableProfessors() {
-  return Prisma.professor
-    .findMany({
-      select: {
-        id: true,
-      },
-      include: {
-        user: {
-          select: {
-            name: true,
-            email: true,
-          },
-        },
-        RegistrationSessions: {
-          select: {
-            id: true,
-            startDate: true,
-            endDate: true,
-          },
-        },
-        DissertationRequests: {
-          select: {
-            id: true,
-            status: true,
-          },
+  const professors = await Prisma.professor.findMany({
+    select: {
+      id: true,
+      user: {
+        select: {
+          name: true,
+          email: true,
         },
       },
-    })
+      RegistrationSessions: {
+        select: {
+          id: true,
+          startDate: true,
+          endDate: true,
+        },
+      },
+      DissertationRequests: {
+        select: {
+          id: true,
+          status: true,
+        },
+      },
+    },
+  });
+  const filteredProfessors = professors
     .filter(
       (professor) =>
         professor.RegistrationSessions.length > 0 &&
-        professor.RegistrationSessions.any(
+        professor.RegistrationSessions.some(
           (session) => session.endDate > new Date(),
         ),
     )
@@ -43,10 +41,13 @@ export async function getAllAvailableProfessors() {
       const numberOfStudents = professor.DissertationRequests.filter(
         (request) => request.status === DissertationRequestStatus.APPROVED,
       ).length;
+      delete professor.DissertationRequests;
       return {
         ...professor,
         numberOfStudents,
         isFull: numberOfStudents >= MAX_NUMBER_OF_STUDENTS_PER_PROFESSOR,
       };
     });
+
+  return filteredProfessors;
 }
