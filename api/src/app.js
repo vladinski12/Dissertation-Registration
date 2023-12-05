@@ -1,22 +1,17 @@
 import path from 'path';
-import { fileURLToPath } from 'url';
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
-import { PORT } from './utils/env.js';
 import Router from './router.js';
+import initalizeSwagger from './swagger.js';
 import HttpException from '../src/utils/http-exception.js';
 import ErrorMiddleware from './utils/middlewares/error.middleware.js';
-import swaggerUi from 'swagger-ui-express';
-import swaggerAutogen from 'swagger-autogen';
-import { readFileSync } from 'fs';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const swaggerDocument = JSON.parse(
-  readFileSync(path.join(__dirname, 'swagger.json'), 'utf8')
-);
+import { PORT } from './utils/env.js';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 //* INITIALIZATIONS
 const app = express();
@@ -27,26 +22,15 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-swaggerAutogen()(
-  path.join(__dirname, 'swagger.json'),
-  [path.join(__dirname, 'router.js')],
-  {
-    info: {
-      title: 'Dissertation Registration API',
-      description: 'API for the dissertation registration system',
-    },
-    host: 'localhost:3000',
-  }
-);
 
 //* ROUTES
 app.use('/api', Router);
 
+initalizeSwagger(__dirname, app);
+
 app.get('/', (_req, res) => {
   res.send('API is running...');
 });
-
-app.get('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //* HANDLING ERRORS
 app.use(() => {
