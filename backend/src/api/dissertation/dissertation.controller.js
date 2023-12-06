@@ -10,8 +10,8 @@ export async function createDissertationRequest(req, res, next) {
       .json(
         await DissertationService.createDissertationRequest(
           studentId,
-          professorId,
-        ),
+          professorId
+        )
       );
   } catch (err) {
     next(err);
@@ -44,8 +44,8 @@ export async function handlePreliminaryDissertationRequest(req, res, next) {
           professorId,
           dissertationRequestId,
           status,
-          declinedReason,
-        ),
+          declinedReason
+        )
       );
   } catch (err) {
     next(err);
@@ -64,8 +64,8 @@ export async function uploadDissertationRequest(req, res, next) {
           studentId,
           dissertationRequestId,
           filename,
-          path,
-        ),
+          path
+        )
       );
   } catch (err) {
     next(err);
@@ -90,8 +90,8 @@ export async function handleUploadedDissertationRequest(req, res, next) {
           status,
           declinedReason,
           filename,
-          path,
-        ),
+          path
+        )
       );
   } catch (err) {
     next(err);
