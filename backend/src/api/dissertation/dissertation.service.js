@@ -126,10 +126,10 @@ export async function getDissertationRequests(userId) {
   } else if (user.role === UserRole.STUDENT) {
     const student = await Prisma.student.findUnique({
       where: {
-        id: user.studentId,
+        id: user.id,
       },
       include: {
-        dissertationRequests: {
+        DissertationRequests: {
           include: {
             studentFile: true,
             professorFile: true,

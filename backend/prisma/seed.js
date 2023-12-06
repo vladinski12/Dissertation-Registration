@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 const PASSWORD = '$2b$12$D3BHaEp27etNJOQWd74XyOheYXH69aF9Q2Im/a3hT24GnZteDKrge';
 
 async function main() {
+  await prisma.dissertationRequests.deleteMany();
   await prisma.registrationSessions.deleteMany();
   await prisma.professor.deleteMany();
   await prisma.student.deleteMany();
@@ -89,8 +90,8 @@ async function main() {
     data: {
       user: {
         create: {
-          email: 'larisa14@vlad.info',
-          name: 'Larisa Vlad',
+          email: 'marius@vlad.io',
+          name: 'Marius Vlad',
           role: 'STUDENT',
           password: PASSWORD,
         },
@@ -136,6 +137,22 @@ async function main() {
       },
     },
   });
+
+  // await prisma.dissertationRequests.create({
+  //   data: {
+  //     status: 'PENDING',
+  //     student: {
+  //       connect: {
+  //         id: 1,
+  //       },
+  //     },
+  //     professor: {
+  //       connect: {
+  //         id: 1,
+  //       },
+  //     },
+  //   },
+  // });
 }
 
 main()

@@ -66,6 +66,9 @@ function App() {
 	return (
 		<Box
 			component='div'
+			sx={{
+				width: '100vw',
+			}}
 		>
 			<Router>
 				<Routes>

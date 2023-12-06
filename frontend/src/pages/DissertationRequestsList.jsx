@@ -33,7 +33,7 @@ export default function DissertationRequestsList() {
 				setIsLoading(false);
 			}
 		})();
-	}, []);
+	},[]);
 
 	return (
 		<Container>
