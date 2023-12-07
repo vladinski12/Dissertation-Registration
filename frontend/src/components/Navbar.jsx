@@ -4,10 +4,23 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
 import routes from '../app/routesConfig';
 import { Context } from '../state/context/GlobalContext/Context';
+import { useTheme } from '@mui/material/styles';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+const settings = [{
+	title: 'Profile',
+	link: '/profile',
+}, {
+	title: 'Account',
+	link: '/account',
+}, {
+	title: 'Logout',
+	link: '/logout',
+}];
 
 export default function Navbar(){
+	const theme = useTheme();
 	const {context: {role}}=useContext(Context);
 
 	const [anchorElNav, setAnchorElNav] = useState(null);
@@ -43,7 +56,7 @@ export default function Navbar(){
 			<Button
 				key={ route.title }
 				onClick={ handleCloseNavMenu }
-				sx={{ my: 2, color: 'white', display: 'block' }}
+				sx={{ my: 2, color: theme.palette.textColor.main, display: 'block' }}
 			>
 				{route.title}
 			</Button>
