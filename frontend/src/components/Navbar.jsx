@@ -5,16 +5,20 @@ import AdbIcon from '@mui/icons-material/Adb';
 import routes from '../app/routesConfig';
 import { Context } from '../state/context/GlobalContext/Context';
 import { useTheme } from '@mui/material/styles';
+import { v4 as uuid } from 'uuid';
 
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const settings = [{
+	key: uuid(),
 	title: 'Profile',
 	link: '/profile',
 }, {
+	key: uuid(),
 	title: 'Account',
 	link: '/account',
 }, {
+	key: uuid(),
 	title: 'Logout',
 	link: '/logout',
 }];
@@ -167,9 +171,9 @@ export default function Navbar(){
 						>
 							{settings.map((setting) => (
 								<MenuItem
-									key={ setting }
+									key={ setting.key }
 									onClick={ handleCloseUserMenu }>
-									<Typography textAlign="center">{setting}</Typography>
+									<Typography textAlign="center">{setting.title}</Typography>
 								</MenuItem>
 							))}
 						</Menu>
