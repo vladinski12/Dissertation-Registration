@@ -1,8 +1,8 @@
 import {
 	IS_LOADING,
+	SET_ID,
 	SET_IS_LOGGED_IN,
 	SET_ROLE,
-	SET_ID,
 } from '../../actions/globalActions.js';
 
 export default function globalReducer(state, action) {

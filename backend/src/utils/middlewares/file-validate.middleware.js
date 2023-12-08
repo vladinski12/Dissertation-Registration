@@ -6,11 +6,9 @@ const ValidateFile = (size, supportedTypes) => (req, res, next) => {
     return res.status(400).json({ message: 'File is required' });
   }
   if (!isValidFile(file, supportedTypes, size)) {
-    return res
-      .status(400)
-      .json({
-        message: `Invalid file. Formats accepted: ${supportedTypes.join(' ')}`,
-      });
+    return res.status(400).json({
+      message: `Invalid file. Formats accepted: ${supportedTypes.join(' ')}`,
+    });
   }
   next();
 };

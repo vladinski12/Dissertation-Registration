@@ -1,14 +1,14 @@
-import path from 'path';
-import express from 'express';
-import morgan from 'morgan';
-import cors from 'cors';
-import helmet from 'helmet';
-import compression from 'compression';
-import Router from './router.js';
-import HttpException from '../src/utils/http-exception.js';
 import ErrorMiddleware from './utils/middlewares/error.middleware.js';
+import HttpException from '../src/utils/http-exception.js';
 import { PORT } from './utils/env.js';
+import Router from './router.js';
+import compression from 'compression';
+import cors from 'cors';
+import express from 'express';
 import { fileURLToPath } from 'url';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import path from 'path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

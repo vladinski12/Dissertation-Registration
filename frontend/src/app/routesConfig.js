@@ -1,8 +1,8 @@
 import { APP_ROUTES } from './routes';
-import NotFound from '../pages/NotFound';
 import DissertationRequestsList from '../pages/DissertationRequestsList';
-import { UserRole } from '../utils/constants';
+import NotFound from '../pages/NotFound';
 import ProfessorsList from '../pages/ProfessorsList';
+import { UserRole } from '../utils/constants';
 
 export default [
 	{

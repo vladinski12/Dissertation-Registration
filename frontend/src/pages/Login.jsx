@@ -1,8 +1,8 @@
-import useAuth from '../state/hooks/useAuth.js';
-import { Box, TextField, Button } from '@mui/material';
-import { loginSubmitHandler } from '../utils/calls/authCalls.js';
+import { Box, Button, TextField } from '@mui/material';
 import FormikBase from '../components/templates/FormikBase';
 import { loginSchema } from '../utils/yupSchemas.js';
+import { loginSubmitHandler } from '../utils/calls/authCalls.js';
+import useAuth from '../state/hooks/useAuth.js';
 
 export default function Login() {
 	const { setToken } = useAuth();

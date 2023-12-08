@@ -1,13 +1,13 @@
-import path from 'path';
-import multer from 'multer';
 import { MAX_FILE_SIZE } from './utils/env.js';
+import multer from 'multer';
+import path from 'path';
 
 const storage = multer.diskStorage({
   destination: './public/uploads',
   filename: function (_req, file, cb) {
     cb(
       null,
-      file.fieldname + '-' + Date.now() + path.extname(file.originalname),
+      file.fieldname + '-' + Date.now() + path.extname(file.originalname)
     );
   },
 });

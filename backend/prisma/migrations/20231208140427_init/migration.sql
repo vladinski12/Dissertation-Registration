@@ -42,6 +42,7 @@ CREATE TABLE "RegistrationSessions" (
 CREATE TABLE "DissertationRequests" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "status" TEXT NOT NULL DEFAULT 'PENDING_APPROVAL',
+    "studentMessage" TEXT NOT NULL,
     "declinedReason" TEXT,
     "student_id" INTEGER NOT NULL,
     "professor_id" INTEGER NOT NULL,

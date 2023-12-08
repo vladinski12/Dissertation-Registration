@@ -3,7 +3,13 @@
     "node": true,
     "es2021": true
   },
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "prettier"
+  ],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
@@ -12,6 +18,9 @@
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "no-unused-vars": ["error"],
-    "no-undef": ["error"]
+    "no-undef": ["error"],
+    "import/extensions": ["error", "ignorePackages"],
+    "sort-imports": ["error"],
+    "no-duplicate-imports": ["error"]
   }
 }

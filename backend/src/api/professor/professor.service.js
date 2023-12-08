@@ -1,8 +1,8 @@
-import Prisma from '../../prisma.js';
 import {
   DissertationRequestStatus,
   MAX_NUMBER_OF_STUDENTS_PER_PROFESSOR,
 } from '../../utils/constants.js';
+import Prisma from '../../prisma.js';
 
 export async function getAllAvailableProfessors() {
   const professors = await Prisma.professor.findMany({
@@ -34,12 +34,12 @@ export async function getAllAvailableProfessors() {
       (professor) =>
         professor.RegistrationSessions.length > 0 &&
         professor.RegistrationSessions.some(
-          (session) => session.endDate > new Date(),
-        ),
+          (session) => session.endDate > new Date()
+        )
     )
     .map((professor) => {
       const numberOfStudents = professor.DissertationRequests.filter(
-        (request) => request.status === DissertationRequestStatus.APPROVED,
+        (request) => request.status === DissertationRequestStatus.APPROVED
       ).length;
       delete professor.DissertationRequests;
       return {

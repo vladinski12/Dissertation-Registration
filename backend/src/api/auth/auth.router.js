@@ -1,11 +1,11 @@
-import express from 'express';
 import * as AuthController from './auth.controller.js';
-import ValidateSchema from '../../utils/middlewares/schema-validate.middleware.js';
 import {
   LoginValidateSchema,
   RegisterValidateSchema,
 } from '../../utils/yup-schemas.js';
 import AuthMiddleware from '../../utils/middlewares/auth.middleware.js';
+import ValidateSchema from '../../utils/middlewares/schema-validate.middleware.js';
+import express from 'express';
 
 const AuthRouter = express.Router();
 

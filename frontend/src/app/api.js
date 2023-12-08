@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { API_ROUTES } from './routes';
+import axios from 'axios';
 
 export const axiosInstance = axios.create({
 	baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3000/',
@@ -20,6 +20,16 @@ const API = {
 				API_ROUTES.dissertationRequests.getDissertationRequests,
 				options
 			),
+		createDissertationRequest: (data, options) =>
+			axiosInstance.post(
+				API_ROUTES.dissertationRequests.createDissertationRequest,
+				data,
+				options
+			),
+	},
+	professors: {
+		getProfessors: (options) =>
+			axiosInstance.get(API_ROUTES.professors.getProfessors, options),
 	},
 };
 

@@ -14,6 +14,7 @@ const theme = createTheme({
 		},
 		textColor: {
 			main: '#fff',
+			selected: '#000',
 		},
 	},
 });
