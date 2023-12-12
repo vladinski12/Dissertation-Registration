@@ -9,11 +9,12 @@ import {
 	setId as setIdAction,
 	setIsLoading as setLoadingAction,
 	setIsLoggedIn as setLoginAction,
-	setRole as setRoleAction
+	setName as setNameAction,
+	setRole as setRoleAction,
 } from '../../actions/globalActions';
 import API from '../../../app/api';
 import globalReducer from '../reducers/globalReducer';
-import {initialState} from '../../../utils/constants';
+import { initialState } from '../../../utils/constants';
 
 export const Context = createContext({ context: initialState });
 
@@ -37,6 +38,7 @@ const Provider = ({ children }) => {
 			if (response?.data) {
 				setRole(response.data.role);
 				setId(response.data.id);
+				setName(response.data.name);
 				setIsLoggedIn(true);
 			}
 		} catch (error) {
@@ -67,6 +69,10 @@ const Provider = ({ children }) => {
 		dispatch(setLoadingAction(is));
 	}
 
+	function setName(name) {
+		dispatch(setNameAction(name));
+	}
+
 	const value = useMemo(
 		() => ({
 			context,
@@ -74,6 +80,7 @@ const Provider = ({ children }) => {
 			setRole,
 			setId,
 			setIsLoading,
+			setName,
 			authorize,
 		}),
 		[context]

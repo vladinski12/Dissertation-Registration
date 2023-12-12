@@ -1,22 +1,16 @@
 import { Container,Divider, List,ListItem, Stack,Typography } from '@mui/material';
-import {Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment,  useEffect, useState } from 'react';
 import API from '../app/api';
-import { Context } from '../state/context/GlobalContext/Context';
 import CreateRequestButtonDialog from '../components/CreateRequestButtonDialog';
 import { formatDate } from '../utils/dateHelpers';
 import { showToast } from '../components/templates/ToastMessage';
 
 const ProfessorsList = () => {
-	const {
-		setIsLoading,
-	} = useContext(Context);
-
 	const [professors, setProfessors] = useState([]);
 
 	useEffect(() => {
 		(async () => {
 			try {
-				setIsLoading(true);
 				const response = await API.professors.getProfessors(
 					{
 						headers: {
@@ -30,18 +24,20 @@ const ProfessorsList = () => {
 				}
 			} catch (error) {
 				showToast(error?.response?.data?.message, 'error');
-			} finally {
-				setIsLoading(false);
 			}
 		})();
 	},[]);
 
 	return (
-		<Container>
-			<Typography variant='h5'>Professors List</Typography>
+		<Container
+			sx={
+				{ my: 5, }
+			}
+		>
+			<Typography variant='h4'>Professors List</Typography>
 			<List >
 				{professors.map((professor) => {
-					const availableUntil= professor.RegistrationSessions.find((registrationSession) => new Date(registrationSession.startDate) < Date.now() && new Date(registrationSession.endDate) > Date.now() )?.endDate;
+					const availableUntil = professor.RegistrationSessions.find((registrationSession) => new Date(registrationSession.startDate) < Date.now() && new Date(registrationSession.endDate) > Date.now() )?.endDate;
 					return(
 						<Fragment key={professor.id}>
 							<Stack
@@ -73,8 +69,8 @@ const ProfessorsList = () => {
 									</Typography>
 								</ListItem>
 								<CreateRequestButtonDialog
-									professorId={professor.id}
-									setIsLoading={setIsLoading}/>
+									professor={professor}
+								/>
 							</Stack>
 							<Divider
 								sx={{
@@ -84,7 +80,7 @@ const ProfessorsList = () => {
 								variant="inset"
 								component="li"/>
 						</Fragment>
-					);})	
+					);})
 				}
 			</List>
 		</Container>

@@ -1,6 +1,6 @@
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 
-export default function FormikBase({initialValues,validationSchema,onSubmit,children,...props}){
+export default function FormikBase({ initialValues,validationSchema,onSubmit,children,...props }){
 	return(
 		<Formik
 			initialValues={ initialValues }
@@ -10,7 +10,7 @@ export default function FormikBase({initialValues,validationSchema,onSubmit,chil
 			validateOnBlur={ true }
 			onSubmit={ onSubmit }
 			{ ...props }>
-			{ props=>children({...props}) }
+			{ props=>children({ ...props }) }
 		</Formik>
 	);
 }

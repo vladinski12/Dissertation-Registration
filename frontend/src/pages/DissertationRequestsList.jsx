@@ -1,21 +1,21 @@
-import { Container, Typography } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
+import {  Container,Divider,  List,ListItem,Stack,Typography } from '@mui/material';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import API from '../app/api';
 import { Context } from '../state/context/GlobalContext/Context';
+import ShowStudentMessage from '../components/ShowStudentMessage';
+import { UserRole } from '../utils/constants';
+import { formatDate } from '../utils/dateHelpers';
 import { showToast } from '../components/templates/ToastMessage';
 
 export default function DissertationRequestsList() {
 	const {
 		context: { role },
-		setIsLoading,
 	} = useContext(Context);
-
 	const [dissertationRequestsList, setDissertationRequestsList] = useState([]);
 
 	useEffect(() => {
 		(async () => {
 			try {
-				setIsLoading(true);
 				const response = await API.dissertationRequests.getDissertationRequests(
 					{
 						headers: {
@@ -29,19 +29,57 @@ export default function DissertationRequestsList() {
 				}
 			} catch (error) {
 				showToast(error?.response?.data?.message, 'error');
-			} finally {
-				setIsLoading(false);
 			}
 		})();
 	},[]);
 
 	return (
-		<Container>
-			<Typography variant='h5'>Dissertation Requests List</Typography>
-			<Typography variant='h6'>Role: {role}</Typography>
+		<Container
+			sx={{
+				my: 5,
+			}}>
+			<Typography variant='h4'>Requests List</Typography>
+			<Typography variant='h5'>Role: {role}</Typography>
 			<Typography variant='h6'>
 				Number of dissertation requests: {dissertationRequestsList.length}
 			</Typography>
+			<List>
+				{dissertationRequestsList.map((dissertationRequest) => {
+					return(
+						<Fragment key={dissertationRequest.id}>
+							<Stack
+								direction="row"
+								spacing={3}>
+								<ListItem
+									alignItems="flex-start"
+									sx={{
+										display: 'flex',
+										flexDirection: 'column',
+										m: 2,
+									}}>
+									<Typography>
+										{role === UserRole.PROFESSOR ? `From : ${dissertationRequest.student.user.name}` : `To: ${dissertationRequest.professor.user.name}`}
+									</Typography>
+									<Typography>
+										Status:	{dissertationRequest.status.replace('_', ' ')}
+									</Typography>
+									<Typography>
+										Created at: {formatDate(dissertationRequest.createdAt)}
+									</Typography>
+								</ListItem>
+								<ShowStudentMessage message={dissertationRequest.studentMessage}/>
+							</Stack>
+							<Divider
+								sx={{
+									m: 2,
+									alignSelf: 'center',
+								}}
+								variant="inset"
+								component="li"/>
+						</Fragment>
+					);
+				})}
+			</List>
 		</Container>
 	);
 }

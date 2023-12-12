@@ -18,6 +18,10 @@
 	"settings": { "react": { "version": "detect" } },
 	"plugins": ["react-refresh", "react", "react-hooks"],
 	"rules": {
+		"no-irregular-whitespace": "error",
+		"no-trailing-spaces": "error",
+		"space-infix-ops": ["error", { "int32Hint": false }],
+		"object-curly-spacing": ["error", "always"],
 		"sort-imports": [
 			"error",
 			{

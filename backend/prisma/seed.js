@@ -137,22 +137,6 @@ async function main() {
       },
     },
   });
-
-  // await prisma.dissertationRequests.create({
-  //   data: {
-  //     status: 'PENDING',
-  //     student: {
-  //       connect: {
-  //         id: 1,
-  //       },
-  //     },
-  //     professor: {
-  //       connect: {
-  //         id: 1,
-  //       },
-  //     },
-  //   },
-  // });
 }
 
 main()

@@ -3,17 +3,17 @@ import { APP_ROUTES } from '../../app/routes.js';
 import { Context } from '../../state/context/GlobalContext/Context';
 import { useContext } from 'react';
 
-export default function RoleCheckOutlet({route}){
-	const {context: {role: userRole}}=useContext(Context);
+export default function RoleCheckOutlet({ route }){
+	const { context: { role: userRole } } = useContext(Context);
 
-	if(!route.roles || route?.roles?.length===0){
+	if(!route.roles || route?.roles?.length === 0){
 		return <Outlet/>;
 	}
-	//  const hasRole = route.roles ? route.roles.some((role) => role === userRole) : false;
+	// const hasRole = route.roles ? route.roles.some((role) => role === userRole) : false;
 
-	const hasRole=route?.roles?.some((role)=>role===userRole);
+	const hasRole = route?.roles?.some((role)=>role === userRole);
 
-	return hasRole?<Outlet/>:<Navigate
+	return hasRole ? <Outlet/> : <Navigate
 		replace
 		to={ APP_ROUTES.notFound }/>;
 }

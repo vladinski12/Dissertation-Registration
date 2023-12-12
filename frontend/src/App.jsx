@@ -20,7 +20,7 @@ import RoleCheckOutlet from './components/templates/RoleCheckOutlet';
 import map from 'lodash/map';
 import routes from './app/routesConfig';
 
-function ProtectedRoutes() {
+const ProtectedRoutes = () => {
 	return (
 		<>
 			<Navbar/>
@@ -46,7 +46,7 @@ function ProtectedRoutes() {
 			</Routes>
 		</>
 	);
-}
+};
 
 function App() {
 	const {
@@ -68,8 +68,7 @@ function App() {
 			component='div'
 			sx={{
 				width: '100vw',
-			}}
-		>
+			}}>
 			<Router>
 				<Routes>
 					<Route
