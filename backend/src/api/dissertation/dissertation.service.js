@@ -1,26 +1,31 @@
-import Prisma from '../../prisma.js';
 import {
   DissertationRequestStatus,
   MAX_NUMBER_OF_STUDENTS_PER_PROFESSOR,
   UserRole,
 } from '../../utils/constants.js';
 import HttpException from '../../utils/http-exception.js';
+import Prisma from '../../prisma.js';
 
-export async function createDissertationRequest(studentId, professorId) {
+export async function createDissertationRequest(
+  studentId,
+  professorId,
+  studentMessage
+) {
   const student = await Prisma.student.findUnique({
     where: {
-      id: studentId,
+      userId: studentId,
     },
     include: {
-      dissertationRequests: true,
+      DissertationRequests: true,
     },
   });
+
   if (!student) {
     throw new HttpException('Student not found', 404);
   }
 
   if (
-    student.dissertationRequests.filter(
+    student.DissertationRequests?.filter(
       (dissertationRequest) =>
         dissertationRequest.status === DissertationRequestStatus.APPROVED
     ).length > 0
@@ -33,7 +38,7 @@ export async function createDissertationRequest(studentId, professorId) {
 
   const professor = await Prisma.professor.findUnique({
     where: {
-      id: professorId,
+      userId: professorId,
     },
     include: {
       DissertationRequests: true,
@@ -69,7 +74,7 @@ export async function createDissertationRequest(studentId, professorId) {
   }
 
   if (
-    !professor.RegistrationSessions.any(
+    !professor.RegistrationSessions.some(
       (session) =>
         session.endDate > new Date() && session.startDate < new Date()
     )
@@ -79,6 +84,7 @@ export async function createDissertationRequest(studentId, professorId) {
 
   return Prisma.dissertationRequests.create({
     data: {
+      studentMessage,
       student: {
         connect: {
           id: studentId,
@@ -126,15 +132,10 @@ export async function getDissertationRequests(userId) {
   } else if (user.role === UserRole.STUDENT) {
     const student = await Prisma.student.findUnique({
       where: {
-        id: user.studentId,
+        userId: user.id,
       },
       include: {
-        dissertationRequests: {
-          include: {
-            studentFile: true,
-            professorFile: true,
-          },
-        },
+        DissertationRequests: true,
       },
     });
     if (!student) {

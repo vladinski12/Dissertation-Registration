@@ -1,19 +1,19 @@
 import {
 	createContext,
 	useCallback,
-	useReducer,
 	useEffect,
 	useMemo,
+	useReducer,
 } from 'react';
-import globalReducer from '../reducers/globalReducer';
-import {initialState} from '../../../utils/constants';
 import {
-	setIsLoggedIn as setLoginAction,
-	setIsLoading as setLoadingAction,
 	setId as setIdAction,
+	setIsLoading as setLoadingAction,
+	setIsLoggedIn as setLoginAction,
 	setRole as setRoleAction
 } from '../../actions/globalActions';
 import API from '../../../app/api';
+import globalReducer from '../reducers/globalReducer';
+import {initialState} from '../../../utils/constants';
 
 export const Context = createContext({ context: initialState });
 

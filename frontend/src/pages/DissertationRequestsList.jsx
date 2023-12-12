@@ -1,7 +1,7 @@
-import { useContext, useState, useEffect } from 'react';
-import { Context } from '../state/context/GlobalContext/Context';
 import { Container, Typography } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
 import API from '../app/api';
+import { Context } from '../state/context/GlobalContext/Context';
 import { showToast } from '../components/templates/ToastMessage';
 
 export default function DissertationRequestsList() {
@@ -33,7 +33,7 @@ export default function DissertationRequestsList() {
 				setIsLoading(false);
 			}
 		})();
-	}, []);
+	},[]);
 
 	return (
 		<Container>

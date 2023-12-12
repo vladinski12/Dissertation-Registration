@@ -54,6 +54,7 @@ model RegistrationSessions {
 model DissertationRequests {
   id              Int       @id @default(autoincrement())
   status          String    @default("PENDING_APPROVAL")
+  studentMessage  String
   declinedReason  String?
   student         Student   @relation(fields: [studentId], references: [id])
   studentId       Int       @map("student_id")

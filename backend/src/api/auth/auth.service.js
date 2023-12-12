@@ -1,10 +1,10 @@
-import HttpException from '../../utils/http-exception.js';
-import Prisma from '../../prisma.js';
 import * as bcrypt from 'bcrypt';
 import {
   generateAccessToken,
   hashPassword,
 } from '../../utils/functions/auth.helpers.js';
+import HttpException from '../../utils/http-exception.js';
+import Prisma from '../../prisma.js';
 import { UserRole } from '../../utils/constants.js';
 
 async function login({ email, password }) {
