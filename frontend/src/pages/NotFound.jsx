@@ -1,5 +1,5 @@
+import { Link ,useNavigate} from 'react-router-dom';
 import  { useEffect,useState } from 'react';
-import { useNavigate ,Link} from 'react-router-dom';
 import { Box } from '@mui/material';
 
 export default function NotFound(){

@@ -1,8 +1,8 @@
 import { CUSTOM_ERROR_MESSAGES } from '../constants.js';
 import HttpException from '../http-exception.js';
+import { JWT_ACCESS_SECRET } from '../env.js';
 import { getTokenFromRequest } from '../functions/auth.helpers.js';
 import jwt from 'jsonwebtoken';
-import { JWT_ACCESS_SECRET } from '../env.js';
 
 export const RoleMiddleware = (role) => (req, _res, next) => {
   const token = getTokenFromRequest(req);

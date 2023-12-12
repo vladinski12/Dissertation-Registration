@@ -1,31 +1,50 @@
-import  { useState,useContext } from 'react';
-import { AppBar,Container,Toolbar,Typography,Menu,Box,IconButton ,MenuItem,Tooltip,Avatar,Button} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import {
+	AppBar,
+	Avatar,
+	Box,
+	Button,
+	Container,
+	IconButton,
+	Menu,
+	MenuItem,
+	Toolbar,
+	Tooltip,
+	Typography,
+} from '@mui/material';
+import { useContext, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AdbIcon from '@mui/icons-material/Adb';
-import routes from '../app/routesConfig';
 import { Context } from '../state/context/GlobalContext/Context';
+import MenuIcon from '@mui/icons-material/Menu';
+import routes from '../app/routesConfig';
 import { useTheme } from '@mui/material/styles';
 import { v4 as uuid } from 'uuid';
 
-// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
-const settings = [{
-	key: uuid(),
-	title: 'Profile',
-	link: '/profile',
-}, {
-	key: uuid(),
-	title: 'Account',
-	link: '/account',
-}, {
-	key: uuid(),
-	title: 'Logout',
-	link: '/logout',
-}];
+const settings = [
+	{
+		title: 'Profile',
+		link: '/profile',
+	},
+	{
+		title: 'Account',
+		link: '/account',
+	},
+	{
+		title: 'Logout',
+		link: '/logout',
+	},
+];
 
 export default function Navbar(){
 	const theme = useTheme();
-	const {context: {role}}=useContext(Context);
+
+	const navigate = useNavigate();
+
+	const locationPath = useLocation().pathname;
+
+	const {
+		context: { role },
+	} = useContext(Context);
 
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
@@ -37,46 +56,58 @@ export default function Navbar(){
 		setAnchorElUser(event.currentTarget);
 	};
 
-	const handleCloseNavMenu = () => {
+	const handleCloseNavMenu = (link) => {
 		setAnchorElNav(null);
+		if (link) {
+			navigate(link);
+		}
 	};
 
-	const handleCloseUserMenu = () => {
+	const handleCloseUserMenu = (link) => {
 		setAnchorElUser(null);
+		if (link) {
+			navigate(link);
+		}
 	};
 
-	const renderMenuItems=()=>{
-		return routes.filter((route)=>route.title && route.roles?.includes(role)).map((route)=>(
-			<MenuItem
-				key={ route.title }
-				onClick={ handleCloseNavMenu }>
-				<Typography textAlign="center">{route.title}</Typography>
-			</MenuItem>
-		));
+	const renderMenuItems = () => {
+		return routes
+			.filter((route) => route.title && route.roles?.includes(role))
+			.map((route) => (
+				<MenuItem
+					key={route.title}
+					selected={locationPath === route.path}
+					onClick={() => handleCloseNavMenu(route.path)}
+				>
+					<Typography textAlign='center'>{route.title}  </Typography>
+				</MenuItem>
+			));
 	};
 
-	const renderButtonItems=()=>{
-		return routes.filter((route)=>route.title && route.roles?.includes(role)).map((route)=>(
-			<Button
-				key={ route.title }
-				onClick={ handleCloseNavMenu }
-				sx={{ my: 2, color: theme.palette.textColor.main, display: 'block' }}
-			>
-				{route.title}
-			</Button>
-		));
+	const renderButtonItems = () => {
+		return routes
+			.filter((route) => route.title && route.roles?.includes(role))
+			.map((route) => (
+				<Button
+					key={route.title}
+					onClick={() => handleCloseNavMenu(route.path)}
+					sx={{ my: 2, color: route.path === locationPath? theme.palette.textColor.selected : theme.palette.textColor.main, display: 'block'  }}
+				>
+					{route.title}
+				</Button>
+			));
 	};
 
 	return (
-		<AppBar position="static">
-			<Container maxWidth="xl">
+		<AppBar position='static'>
+			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
 					<AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}/>
 					<Typography
-						variant="h6"
+						variant='h6'
 						noWrap
-						component="a"
-						href="/"
+						component='a'
+						href='/'
 						sx={{
 							mr: 2,
 							display: { xs: 'none', md: 'flex' },
@@ -91,18 +122,18 @@ export default function Navbar(){
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 						<IconButton
-							size="large"
-							aria-label="account of current user"
-							aria-controls="menu-appbar"
-							aria-haspopup="true"
-							onClick={ handleOpenNavMenu }
-							color="inherit"
+							size='large'
+							aria-label='account of current user'
+							aria-controls='menu-appbar'
+							aria-haspopup='true'
+							onClick={handleOpenNavMenu}
+							color='inherit'
 						>
 							<MenuIcon/>
 						</IconButton>
 						<Menu
-							id="menu-appbar"
-							anchorEl={ anchorElNav }
+							id='menu-appbar'
+							anchorEl={anchorElNav}
 							anchorOrigin={{
 								vertical: 'bottom',
 								horizontal: 'left',
@@ -112,8 +143,8 @@ export default function Navbar(){
 								vertical: 'top',
 								horizontal: 'left',
 							}}
-							open={ Boolean(anchorElNav) }
-							onClose={ handleCloseNavMenu }
+							open={Boolean(anchorElNav)}
+							onClose={handleCloseNavMenu}
 							sx={{
 								display: { xs: 'block', md: 'none' },
 							}}
@@ -123,10 +154,10 @@ export default function Navbar(){
 					</Box>
 					<AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}/>
 					<Typography
-						variant="h5"
+						variant='h5'
 						noWrap
-						component="a"
-						href="#app-bar-with-responsive-menu"
+						component='a'
+						href='#app-bar-with-responsive-menu'
 						sx={{
 							mr: 2,
 							display: { xs: 'flex', md: 'none' },
@@ -144,19 +175,19 @@ export default function Navbar(){
 						{renderButtonItems()}
 					</Box>
 					<Box sx={{ flexGrow: 0 }}>
-						<Tooltip title="Open settings">
+						<Tooltip title='Open settings'>
 							<IconButton
-								onClick={ handleOpenUserMenu }
+								onClick={handleOpenUserMenu}
 								sx={{ p: 0 }}>
 								<Avatar
-									alt="Remy Sharp"
-									src="/static/images/avatar/2.jpg"/>
+									alt='Remy Sharp'
+									src='/static/images/avatar/2.jpg'/>
 							</IconButton>
 						</Tooltip>
 						<Menu
 							sx={{ mt: '45px' }}
-							id="menu-appbar"
-							anchorEl={ anchorElUser }
+							id='menu-appbar'
+							anchorEl={anchorElUser}
 							anchorOrigin={{
 								vertical: 'top',
 								horizontal: 'right',
@@ -166,14 +197,14 @@ export default function Navbar(){
 								vertical: 'top',
 								horizontal: 'right',
 							}}
-							open={ Boolean(anchorElUser) }
-							onClose={ handleCloseUserMenu }
+							open={Boolean(anchorElUser)}
+							onClose={handleCloseUserMenu}
 						>
 							{settings.map((setting) => (
 								<MenuItem
-									key={ setting.key }
-									onClick={ handleCloseUserMenu }>
-									<Typography textAlign="center">{setting.title}</Typography>
+									key={setting.title}
+									onClick={handleCloseUserMenu}>
+									<Typography textAlign='center'>{setting.title}</Typography>
 								</MenuItem>
 							))}
 						</Menu>

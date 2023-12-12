@@ -18,6 +18,15 @@
 	"settings": { "react": { "version": "detect" } },
 	"plugins": ["react-refresh", "react", "react-hooks"],
 	"rules": {
+		"sort-imports": [
+			"error",
+			{
+				"ignoreCase": false,
+				"ignoreDeclarationSort": false,
+				"ignoreMemberSort": false,
+				"memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+			}
+		],
 		"camelcase": "warn",
 		"spaced-comment": "warn",
 		"no-duplicate-imports": "error",

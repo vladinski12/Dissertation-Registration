@@ -1,16 +1,18 @@
-import { DissertationRequestStatus } from '../../utils/constants.js';
 import * as DissertationService from './dissertation.service.js';
+import { DissertationRequestStatus } from '../../utils/constants.js';
 
 export async function createDissertationRequest(req, res, next) {
   try {
     const studentId = req.user.id;
     const professorId = req.body.professorId;
+    const studentMessage = req.body.studentMessage;
     res
       .status(200)
       .json(
         await DissertationService.createDissertationRequest(
           studentId,
-          professorId
+          professorId,
+          studentMessage
         )
       );
   } catch (err) {

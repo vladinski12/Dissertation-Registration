@@ -1,9 +1,9 @@
-import express from 'express';
 import AuthRouter from '../src/api/auth/auth.router.js';
-import StudentRouter from '../src/api/student/student.router.js';
-import ProfessorRouter from '../src/api/professor/professor.router.js';
 import DissertationRouter from '../src/api/dissertation/dissertation.router.js';
+import ProfessorRouter from '../src/api/professor/professor.router.js';
 import RegistrationSessionsRouter from '../src/api/registration-session/registration-session.router.js';
+import StudentRouter from '../src/api/student/student.router.js';
+import express from 'express';
 
 const Router = express.Router();
 

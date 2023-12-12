@@ -2,23 +2,23 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import React, { useContext } from 'react';
-import routes from './app/routesConfig';
-import { Helmet } from 'react-helmet-async';
-import map from 'lodash/map';
 import {
+	Navigate,
+	Route,
 	BrowserRouter as Router,
 	Routes,
-	Route,
-	Navigate,
 } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import RoleCheckOutlet from './components/templates/RoleCheckOutlet';
-import Loading from './components/templates/Loading';
-import Login from './pages/Login';
-import { Context } from './state/context/GlobalContext/Context';
+import React, { useContext } from 'react';
 import { APP_ROUTES } from './app/routes';
 import { Box } from '@mui/material';
+import { Context } from './state/context/GlobalContext/Context';
+import { Helmet } from 'react-helmet-async';
+import Loading from './components/templates/Loading';
+import Login from './pages/Login';
+import Navbar from './components/Navbar';
+import RoleCheckOutlet from './components/templates/RoleCheckOutlet';
+import map from 'lodash/map';
+import routes from './app/routesConfig';
 
 function ProtectedRoutes() {
 	return (
