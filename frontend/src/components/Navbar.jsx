@@ -18,6 +18,7 @@ import { Context } from '../state/context/GlobalContext/Context';
 import MenuIcon from '@mui/icons-material/Menu';
 import routes from '../app/routesConfig';
 import { useTheme } from '@mui/material/styles';
+import { v4 as uuid } from 'uuid';
 
 const settings = [
 	{
@@ -34,7 +35,7 @@ const settings = [
 	},
 ];
 
-export default function Navbar() {
+export default function Navbar(){
 	const theme = useTheme();
 
 	const navigate = useNavigate();
