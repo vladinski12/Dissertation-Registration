@@ -10,14 +10,15 @@ const toastConfig = {
 	draggable: true,
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const showToast = (message,type) => {
-	if(message.length>0){
+	if(message.length > 0){
 		switch (type) {
 			case 'success':
-				toast.success(message, {...toastConfig});
+				toast.success(message, { ...toastConfig });
 				break;
 			case 'error':
-				toast.error(message,  {...toastConfig});
+				toast.error(message,  { ...toastConfig });
 				break;
 			default:
 				break;
@@ -25,7 +26,7 @@ export const showToast = (message,type) => {
 	}
 };
 
-const ToastMessage = ({message,type}) => {
+const ToastMessage = ({ message,type }) => {
 	useEffect(() => {
 		showToast(message,type);
 	}, [message,type]);

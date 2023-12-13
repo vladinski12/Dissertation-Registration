@@ -1,6 +1,6 @@
 export const APP_ROUTES = {
-	dissertationRequestsList: '/dissertation-requests-list',
-	professorsList: '/professors-list',
+	dissertationRequestsList: '/requests',
+	professorsList: '/professors',
 	notFound: '*',
 };
 

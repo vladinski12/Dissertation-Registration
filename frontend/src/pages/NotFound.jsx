@@ -1,11 +1,11 @@
-import { Link ,useNavigate} from 'react-router-dom';
+import { Link ,useNavigate } from 'react-router-dom';
 import  { useEffect,useState } from 'react';
 import { Box } from '@mui/material';
 
 export default function NotFound(){
 	const navigate = useNavigate();
 	const [seconds, setSeconds] = useState(10);
-  
+
 	useEffect(()=>{
 		let timer = setInterval(() => {
 			setSeconds(prev => prev - 1);

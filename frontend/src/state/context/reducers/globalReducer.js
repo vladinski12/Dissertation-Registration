@@ -2,6 +2,7 @@ import {
 	IS_LOADING,
 	SET_ID,
 	SET_IS_LOGGED_IN,
+	SET_NAME,
 	SET_ROLE,
 } from '../../actions/globalActions.js';
 
@@ -18,6 +19,9 @@ export default function globalReducer(state, action) {
 		}
 		case SET_ID: {
 			return { ...state, id: action.payload };
+		}
+		case SET_NAME: {
+			return { ...state, name: action.payload };
 		}
 		default:
 			return state;

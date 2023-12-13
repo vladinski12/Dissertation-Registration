@@ -87,12 +87,12 @@ export async function createDissertationRequest(
       studentMessage,
       student: {
         connect: {
-          id: studentId,
+          id: student.id,
         },
       },
       professor: {
         connect: {
-          id: professorId,
+          id: professor.id,
         },
       },
     },
@@ -101,6 +101,12 @@ export async function createDissertationRequest(
 
 export async function getDissertationRequests(userId) {
   const user = await Prisma.user.findUnique({
+    select: {
+      role: true,
+      id: true,
+      email: true,
+      name: true,
+    },
     where: {
       id: userId,
     },
@@ -115,36 +121,76 @@ export async function getDissertationRequests(userId) {
       where: {
         userId: user.id,
       },
-      include: {
-        DissertationRequests: {
-          include: {
-            studentFile: true,
-            professorFile: true,
-          },
-        },
-      },
     });
     if (!professor) {
       throw new HttpException('Professor not found', 404);
     }
+    const dissertationRequests = await Prisma.dissertationRequests.findMany({
+      where: {
+        professorId: professor.id,
+      },
+    });
 
-    return professor.DissertationRequests;
+    return Promise.all(
+      dissertationRequests.map(async (dissertationRequest) => ({
+        ...dissertationRequest,
+        student: await Prisma.student.findUnique({
+          where: {
+            id: dissertationRequest.studentId,
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+                name: true,
+              },
+            },
+          },
+        }),
+        professor: {
+          ...professor,
+          user,
+        },
+      }))
+    );
   } else if (user.role === UserRole.STUDENT) {
     const student = await Prisma.student.findUnique({
       where: {
         userId: user.id,
       },
-      include: {
-        DissertationRequests: true,
-      },
     });
     if (!student) {
       throw new HttpException('Student not found', 404);
     }
-
-    return student.dissertationRequests;
-  } else {
-    throw new HttpException('Invalid user role', 400);
+    const dissertationRequests = await Prisma.dissertationRequests.findMany({
+      where: {
+        studentId: student.id,
+      },
+    });
+    return Promise.all(
+      dissertationRequests.map(async (dissertationRequest) => ({
+        ...dissertationRequest,
+        student: {
+          ...student,
+          user,
+        },
+        professor: await Prisma.professor.findUnique({
+          where: {
+            id: dissertationRequest.professorId,
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+                name: true,
+              },
+            },
+          },
+        }),
+      }))
+    );
   }
 }
 

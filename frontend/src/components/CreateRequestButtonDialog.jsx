@@ -1,10 +1,15 @@
-import {Button,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle,TextField} from '@mui/material';
+import { Button,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle,TextField } from '@mui/material';
+import { useContext, useState } from 'react';
 import API from '../app/api';
+import { Context } from '../state/context/GlobalContext/Context';
 import SendIcon from '@mui/icons-material/Send';
-import {showToast} from './templates/ToastMessage';
-import {useState} from 'react';
+import { showToast } from './templates/ToastMessage';
 
-const CreateRequestButtonDialog = ({professorId,setIsLoading}) => {
+const CreateRequestButtonDialog = ({ professor }) => {
+	const {
+		setIsLoading,
+	} = useContext(Context);
+
 	const [open, setOpen] = useState(false);
 	const [studentMessage, setStudentMessage] = useState('');
 
@@ -13,7 +18,7 @@ const CreateRequestButtonDialog = ({professorId,setIsLoading}) => {
 			setIsLoading(true);
 			const response = await API.dissertationRequests.createDissertationRequest(
 				{
-					professorId,
+					professorId: professor.id,
 					studentMessage,
 				},
 				{
@@ -63,7 +68,7 @@ const CreateRequestButtonDialog = ({professorId,setIsLoading}) => {
 				<DialogTitle>Send dissertation request</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
-						Send a request to the professor to be your dissertation coordinator.
+						Send a request to {professor.user.name ?? 'professor'} to be your dissertation coordinator.
 					</DialogContentText>
 					<TextField
 						autoFocus

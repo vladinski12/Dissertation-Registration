@@ -86,6 +86,7 @@ async function getMyProfile(userId) {
   return {
     id: user.id,
     role: user.role,
+    name: user.name,
   };
 }
 

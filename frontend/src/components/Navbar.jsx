@@ -11,24 +11,17 @@ import {
 	Tooltip,
 	Typography,
 } from '@mui/material';
+import { Link,useLocation } from 'react-router-dom';
 import { useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import AdbIcon from '@mui/icons-material/Adb';
+import BookIcon from '@mui/icons-material/Book';
 import { Context } from '../state/context/GlobalContext/Context';
 import MenuIcon from '@mui/icons-material/Menu';
 import routes from '../app/routesConfig';
+import { stringAvatar } from '../utils/constants';
 import { useTheme } from '@mui/material/styles';
 import { v4 as uuid } from 'uuid';
 
 const settings = [
-	{
-		title: 'Profile',
-		link: '/profile',
-	},
-	{
-		title: 'Account',
-		link: '/account',
-	},
 	{
 		title: 'Logout',
 		link: '/logout',
@@ -38,12 +31,10 @@ const settings = [
 export default function Navbar(){
 	const theme = useTheme();
 
-	const navigate = useNavigate();
-
 	const locationPath = useLocation().pathname;
 
 	const {
-		context: { role },
+		context: { role,name },
 	} = useContext(Context);
 
 	const [anchorElNav, setAnchorElNav] = useState(null);
@@ -56,31 +47,31 @@ export default function Navbar(){
 		setAnchorElUser(event.currentTarget);
 	};
 
-	const handleCloseNavMenu = (link) => {
+	const handleCloseNavMenu = () => {
 		setAnchorElNav(null);
-		if (link) {
-			navigate(link);
-		}
 	};
 
-	const handleCloseUserMenu = (link) => {
+	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
-		if (link) {
-			navigate(link);
-		}
+
 	};
 
 	const renderMenuItems = () => {
 		return routes
 			.filter((route) => route.title && route.roles?.includes(role))
 			.map((route) => (
-				<MenuItem
+				<Link
+					to={route.path}
 					key={route.title}
-					selected={locationPath === route.path}
-					onClick={() => handleCloseNavMenu(route.path)}
+					style={{ textDecoration: 'none',color: 'black' }}
 				>
-					<Typography textAlign='center'>{route.title}  </Typography>
-				</MenuItem>
+					<MenuItem
+						selected={locationPath === route.path}
+						onClick={handleCloseNavMenu}
+					>
+						{route.title}
+					</MenuItem>
+				</Link>
 			));
 	};
 
@@ -88,13 +79,21 @@ export default function Navbar(){
 		return routes
 			.filter((route) => route.title && route.roles?.includes(role))
 			.map((route) => (
-				<Button
+				<Link
+					to={route.path}
 					key={route.title}
-					onClick={() => handleCloseNavMenu(route.path)}
-					sx={{ my: 2, color: route.path === locationPath? theme.palette.textColor.selected : theme.palette.textColor.main, display: 'block'  }}
-				>
-					{route.title}
-				</Button>
+					style={{ textDecoration: 'none' }}>
+					<Button
+						onClick={handleCloseNavMenu}
+						sx={{
+							my: 2,
+							color: route.path === locationPath ? theme.palette.textColor.selected : theme.palette.textColor.main,
+							display: 'block'
+						}}
+					>
+						{route.title}
+					</Button>
+				</Link>
 			));
 	};
 
@@ -102,7 +101,7 @@ export default function Navbar(){
 		<AppBar position='static'>
 			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
-					<AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}/>
+					<BookIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}/>
 					<Typography
 						variant='h6'
 						noWrap
@@ -118,7 +117,7 @@ export default function Navbar(){
 							textDecoration: 'none',
 						}}
 					>
-						LOGO
+						DISSERTATION
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 						<IconButton
@@ -152,7 +151,7 @@ export default function Navbar(){
 							{renderMenuItems()}
 						</Menu>
 					</Box>
-					<AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}/>
+					<BookIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}/>
 					<Typography
 						variant='h5'
 						noWrap
@@ -179,9 +178,7 @@ export default function Navbar(){
 							<IconButton
 								onClick={handleOpenUserMenu}
 								sx={{ p: 0 }}>
-								<Avatar
-									alt='Remy Sharp'
-									src='/static/images/avatar/2.jpg'/>
+								<Avatar {...stringAvatar(name)}/>
 							</IconButton>
 						</Tooltip>
 						<Menu
