@@ -1,11 +1,15 @@
+import HttpException from '../http-exception.js';
+
 const ValidateSchema = (schema) => (req, res, next) => {
-  const { error } = schema.validate(req.body);
-  if (error) {
-    return res.status(400).json({
-      message: error.details[0].message,
-    });
+  try {
+    const { error } = schema.validate(req.body);
+    if (error) {
+      return next(new HttpException(error.message, 400));
+    }
+    return next();
+  } catch (e) {
+    return next(new HttpException(e.message, 400));
   }
-  return next();
 };
 
 export default ValidateSchema;

@@ -18,15 +18,8 @@ import { Context } from '../state/context/GlobalContext/Context';
 import MenuIcon from '@mui/icons-material/Menu';
 import routes from '../app/routesConfig';
 import { stringAvatar } from '../utils/constants';
+import useAuth from '../state/hooks/useAuth';
 import { useTheme } from '@mui/material/styles';
-import { v4 as uuid } from 'uuid';
-
-const settings = [
-	{
-		title: 'Logout',
-		link: '/logout',
-	},
-];
 
 export default function Navbar(){
 	const theme = useTheme();
@@ -36,6 +29,8 @@ export default function Navbar(){
 	const {
 		context: { role,name },
 	} = useContext(Context);
+
+	const { logout } = useAuth();
 
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
@@ -53,7 +48,11 @@ export default function Navbar(){
 
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
+	};
 
+	const handleLogout = () => {
+		handleCloseUserMenu();
+		logout();
 	};
 
 	const renderMenuItems = () => {
@@ -197,13 +196,10 @@ export default function Navbar(){
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							{settings.map((setting) => (
-								<MenuItem
-									key={setting.title}
-									onClick={handleCloseUserMenu}>
-									<Typography textAlign='center'>{setting.title}</Typography>
-								</MenuItem>
-							))}
+							<MenuItem
+								onClick={handleLogout}>
+								<Typography textAlign='center'>Logout</Typography>
+							</MenuItem>
 						</Menu>
 					</Box>
 				</Toolbar>

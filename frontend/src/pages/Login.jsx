@@ -40,7 +40,6 @@ export default function Login() {
 					handleSubmit,
 				}) => (
 					<Box
-						className='flex flex-col justify-center items-center'
 						component='form'
 						sx={{
 							width: '100%',
@@ -78,7 +77,9 @@ export default function Login() {
 							error={touched.password && Boolean(errors.password)}
 							helperText={touched.password && errors.password}
 						></TextField>
-						<Button onClick={handleSubmit}>LOGIN</Button>
+						<Button
+							type='submit'
+							onClick={handleSubmit}>LOGIN</Button>
 					</Box>
 				)}
 			</FormikBase>

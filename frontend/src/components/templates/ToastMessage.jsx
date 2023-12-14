@@ -17,6 +17,9 @@ export const showToast = (message,type) => {
 			case 'success':
 				toast.success(message, { ...toastConfig });
 				break;
+			case 'warning':
+				toast.warn(message,  { ...toastConfig });
+				break;
 			case 'error':
 				toast.error(message,  { ...toastConfig });
 				break;

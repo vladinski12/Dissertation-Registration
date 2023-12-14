@@ -2,7 +2,7 @@ import {  Container,Divider,  List,ListItem,Stack,Typography } from '@mui/materi
 import { Fragment, useContext, useEffect, useState } from 'react';
 import API from '../app/api';
 import { Context } from '../state/context/GlobalContext/Context';
-import ShowStudentMessage from '../components/ShowStudentMessage';
+import StudentMessageDialog from '../components/StudentMessageDialog';
 import { UserRole } from '../utils/constants';
 import { formatDate } from '../utils/dateHelpers';
 import { showToast } from '../components/templates/ToastMessage';
@@ -11,6 +11,7 @@ export default function DissertationRequestsList() {
 	const {
 		context: { role },
 	} = useContext(Context);
+
 	const [dissertationRequestsList, setDissertationRequestsList] = useState([]);
 
 	useEffect(() => {
@@ -39,7 +40,6 @@ export default function DissertationRequestsList() {
 				my: 5,
 			}}>
 			<Typography variant='h4'>Requests List</Typography>
-			<Typography variant='h5'>Role: {role}</Typography>
 			<Typography variant='h6'>
 				Number of dissertation requests: {dissertationRequestsList.length}
 			</Typography>
@@ -67,7 +67,8 @@ export default function DissertationRequestsList() {
 										Created at: {formatDate(dissertationRequest.createdAt)}
 									</Typography>
 								</ListItem>
-								<ShowStudentMessage message={dissertationRequest.studentMessage}/>
+								<StudentMessageDialog
+									dissertationRequest={dissertationRequest}/>
 							</Stack>
 							<Divider
 								sx={{

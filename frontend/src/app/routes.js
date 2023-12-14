@@ -13,6 +13,7 @@ export const API_ROUTES = {
 	dissertationRequests: {
 		getDissertationRequests: 'dissertation/get-dissertation-requests',
 		createDissertationRequest: 'dissertation/create-dissertation-request',
+		handlePreliminaryDissertationRequest: (id) => `dissertation/handle-preliminary-dissertation-request/${id}`,
 	},
 	professors: {
 		getProfessors: 'professor/available-professors',

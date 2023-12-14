@@ -1,25 +1,23 @@
 import { Button,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle,TextField } from '@mui/material';
-import { useContext, useState } from 'react';
 import API from '../app/api';
-import { Context } from '../state/context/GlobalContext/Context';
 import SendIcon from '@mui/icons-material/Send';
 import { showToast } from './templates/ToastMessage';
+import {  useState } from 'react';
 
 const CreateRequestButtonDialog = ({ professor }) => {
-	const {
-		setIsLoading,
-	} = useContext(Context);
-
 	const [open, setOpen] = useState(false);
 	const [studentMessage, setStudentMessage] = useState('');
 
 	const createRequest = async () => {
+		if (!studentMessage.trim() || studentMessage.trim().length < 10 || studentMessage.trim().length > 255) {
+			showToast('Please enter a message more than 10 and less than 255 characters', 'warning');
+			return;
+		}
 		try {
-			setIsLoading(true);
 			const response = await API.dissertationRequests.createDissertationRequest(
 				{
 					professorId: professor.id,
-					studentMessage,
+					studentMessage: studentMessage.trim(),
 				},
 				{
 					headers: {
@@ -36,7 +34,6 @@ const CreateRequestButtonDialog = ({ professor }) => {
 		} catch (error) {
 			showToast(error?.response?.data?.message, 'error');
 		}finally{
-			setIsLoading(false);
 			setOpen(false);
 		}
 	};

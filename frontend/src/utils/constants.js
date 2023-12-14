@@ -11,6 +11,15 @@ export const UserRole = {
 	STUDENT: 'STUDENT',
 };
 
+export const DissertationRequestStatus = {
+	PENDING_APPROVAL: 'PENDING_APPROVAL',
+	APPROVED: 'APPROVED',
+	DECLINED: 'DECLINED',
+	APPROVED_REJECTED: 'APPROVED_REJECTED',
+	FILE_UPLOADED_BY_STUDENT: 'FILE_UPLOADED_BY_STUDENT',
+	FILE_UPLOADED_BY_PROFESSOR: 'FILE_UPLOADED_BY_PROFESSOR',
+};
+
 function stringToColor(string) {
 	let hash = 0;
 	let i;

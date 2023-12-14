@@ -34,7 +34,7 @@ export async function getDissertationRequests(req, res, next) {
 export async function handlePreliminaryDissertationRequest(req, res, next) {
   try {
     const professorId = req.user.id;
-    const dissertationRequestId = req.params.dissertationRequestId;
+    const dissertationRequestId = Number(req.params.dissertationRequestId);
     const status = req.body.status;
     let declinedReason;
     if (status === DissertationRequestStatus.DECLINED)

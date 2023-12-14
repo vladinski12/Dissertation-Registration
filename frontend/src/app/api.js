@@ -26,6 +26,12 @@ const API = {
 				data,
 				options
 			),
+		handlePreliminaryDissertationRequest: (id,data,options) =>
+			axiosInstance.post(
+				API_ROUTES.dissertationRequests.handlePreliminaryDissertationRequest(id),
+				data,
+				options
+			),
 	},
 	professors: {
 		getProfessors: (options) =>

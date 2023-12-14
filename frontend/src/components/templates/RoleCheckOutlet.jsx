@@ -9,9 +9,7 @@ export default function RoleCheckOutlet({ route }){
 	if(!route.roles || route?.roles?.length === 0){
 		return <Outlet/>;
 	}
-	// const hasRole = route.roles ? route.roles.some((role) => role === userRole) : false;
-
-	const hasRole = route?.roles?.some((role)=>role === userRole);
+	const hasRole = route.roles ? route.roles.some((role) => role === userRole) : false;
 
 	return hasRole ? <Outlet/> : <Navigate
 		replace

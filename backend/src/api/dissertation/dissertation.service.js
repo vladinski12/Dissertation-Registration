@@ -219,7 +219,6 @@ export async function handlePreliminaryDissertationRequest(
   if (!professor) {
     throw new HttpException('Professor not found', 404);
   }
-
   const dissertationRequest = professor.DissertationRequests.find(
     (dissertationRequest) => dissertationRequest.id === dissertationRequestId
   );
@@ -227,7 +226,6 @@ export async function handlePreliminaryDissertationRequest(
   if (!dissertationRequest) {
     throw new HttpException('Dissertation request not found', 404);
   }
-
   if (
     dissertationRequest.status !== DissertationRequestStatus.PENDING_APPROVAL
   ) {

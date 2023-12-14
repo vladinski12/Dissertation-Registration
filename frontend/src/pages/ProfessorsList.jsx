@@ -35,6 +35,7 @@ const ProfessorsList = () => {
 			}
 		>
 			<Typography variant='h4'>Professors List</Typography>
+			<Typography variant='h6'>Number of professors available: {professors.length}</Typography>
 			<List >
 				{professors.map((professor) => {
 					const availableUntil = professor.RegistrationSessions.find((registrationSession) => new Date(registrationSession.startDate) < Date.now() && new Date(registrationSession.endDate) > Date.now() )?.endDate;
