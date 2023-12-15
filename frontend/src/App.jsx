@@ -16,6 +16,7 @@ import { Helmet } from 'react-helmet-async';
 import Loading from './components/templates/Loading';
 import Login from './pages/Login';
 import Navbar from './components/Navbar';
+import Register from './pages/Register';
 import RoleCheckOutlet from './components/templates/RoleCheckOutlet';
 import map from 'lodash/map';
 import routes from './app/routesConfig';
@@ -27,17 +28,17 @@ const ProtectedRoutes = () => {
 			<Routes>
 				{map(routes, (route, idx) => (
 					<Route
-						key={`app-route-${idx}`}
-						element={<RoleCheckOutlet route={route}/>}
+						key={ `app-route-${idx}` }
+						element={ <RoleCheckOutlet route={ route }/> }
 					>
 						<Route
-							{...route}
+							{ ...route }
 							element={
 								<React.Fragment>
-									<Helmet defer={false}>
+									<Helmet defer={ false }>
 										<title>{route?.headTitle}</title>
 									</Helmet>
-									<route.element {...route}/>
+									<route.element { ...route }/>
 								</React.Fragment>
 							}
 						/>
@@ -72,21 +73,30 @@ function App() {
 				<Routes>
 					<Route
 						path='/'
-						element={loadingHandler(
+						element={ loadingHandler(
 							<Navigate
-								to={APP_ROUTES.dissertationRequestsList}
+								to={ APP_ROUTES.dissertationRequestsList }
 								replace/>,
 							<Login/>
-						)}
+						) }
 					/>
 					<Route
+						path="/register"
+						element={ loadingHandler(
+							<Navigate
+								to='/register'
+								replace/>,
+							<Register/>
+						) }
+					></Route>
+					<Route
 						path='/*'
-						element={loadingHandler(
+						element={ loadingHandler(
 							<ProtectedRoutes/>,
 							<Navigate
 								to='/'
 								replace/>
-						)}
+						) }
 					/>
 				</Routes>
 			</Router>

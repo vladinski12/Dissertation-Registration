@@ -1,9 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
-import API from '../app/api';
+import { useContext, useState } from 'react';
+import { DissertationRequestsContext } from '../state/context/DissertationRequestsContext/DissertationRequestsContext';
 import { showToast } from './templates/ToastMessage';
-import { useState } from 'react';
 
-export default function DeclineRequestDialog({ dissertationRequest,previousDialogSetClose }){
+export default function DeclinePreliminaryRequestButtonDialog({ dissertationRequest }){
+	const { declineDissertationRequest } = useContext(DissertationRequestsContext);
 	const [open, setOpen] = useState(false);
 	const [declinedReason, setDeclinedReason] = useState('');
 
@@ -12,31 +13,8 @@ export default function DeclineRequestDialog({ dissertationRequest,previousDialo
 			showToast('Please enter a reason more than 10 and less than 255 characters', 'warning');
 			return;
 		}
-		try {
-			const response = await API.dissertationRequests.handlePreliminaryDissertationRequest(
-				dissertationRequest.id,
-				{
-					status: 'DECLINED',
-					declinedReason,
-				},
-				{
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${localStorage.getItem('token')}`,
-					},
-				}
-			);
-			if (response.status === 200) {
-				showToast('Disseration request declined successfully', 'success');
-			}else{
-				showToast(response?.data?.message, 'warning');
-			}
-		} catch (error) {
-			showToast(error?.response?.data?.message, 'error');
-		}finally{
-			setOpen(false);
-			previousDialogSetClose();
-		}
+		declineDissertationRequest(dissertationRequest.id, declinedReason);
+		setOpen(false);
 	};
 
 	const handleClickOpen = () => {
@@ -56,12 +34,12 @@ export default function DeclineRequestDialog({ dissertationRequest,previousDialo
 					lineHeight: '1rem',
 				}}
 				variant="text"
-				onClick={handleClickOpen}>
+				onClick={ handleClickOpen }>
 				DECLINE
 			</Button>
 			<Dialog
-				open={open}
-				onClose={handleClose}>
+				open={ open }
+				onClose={ handleClose }>
 				<DialogTitle>Decline dissertation request</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
@@ -75,13 +53,13 @@ export default function DeclineRequestDialog({ dissertationRequest,previousDialo
 						type="text"
 						fullWidth
 						variant="standard"
-						value={declinedReason}
-						onChange={(event) => setDeclinedReason(event.target.value)}
+						value={ declinedReason }
+						onChange={ (event) => setDeclinedReason(event.target.value) }
 					/>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleClose}>Cancel</Button>
-					<Button onClick={declineRequest}>Send</Button>
+					<Button onClick={ handleClose }>Cancel</Button>
+					<Button onClick={ declineRequest }>Send</Button>
 				</DialogActions>
 			</Dialog>
 		</>

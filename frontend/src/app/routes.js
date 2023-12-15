@@ -1,6 +1,8 @@
 export const APP_ROUTES = {
 	dissertationRequestsList: '/requests',
 	professorsList: '/professors',
+	approvedDissertationRequestsList: '/approved-requests',
+	uploadDissertationRequest: '/upload-request',
 	notFound: '*',
 };
 
@@ -12,8 +14,11 @@ export const API_ROUTES = {
 	},
 	dissertationRequests: {
 		getDissertationRequests: 'dissertation/get-dissertation-requests',
+		getApprovedDissertationRequests:
+			'dissertation/get-approved-dissertation-requests',
 		createDissertationRequest: 'dissertation/create-dissertation-request',
-		handlePreliminaryDissertationRequest: (id) => `dissertation/handle-preliminary-dissertation-request/${id}`,
+		handlePreliminaryDissertationRequest: (id) =>
+			`dissertation/handle-preliminary-dissertation-request/${id}`,
 	},
 	professors: {
 		getProfessors: 'professor/available-professors',

@@ -20,15 +20,22 @@ const API = {
 				API_ROUTES.dissertationRequests.getDissertationRequests,
 				options
 			),
+		getApprovedDissertationRequests: (options) =>
+			axiosInstance.get(
+				API_ROUTES.dissertationRequests.getApprovedDissertationRequests,
+				options
+			),
 		createDissertationRequest: (data, options) =>
 			axiosInstance.post(
 				API_ROUTES.dissertationRequests.createDissertationRequest,
 				data,
 				options
 			),
-		handlePreliminaryDissertationRequest: (id,data,options) =>
+		handlePreliminaryDissertationRequest: (id, data, options) =>
 			axiosInstance.post(
-				API_ROUTES.dissertationRequests.handlePreliminaryDissertationRequest(id),
+				API_ROUTES.dissertationRequests.handlePreliminaryDissertationRequest(
+					id
+				),
 				data,
 				options
 			),

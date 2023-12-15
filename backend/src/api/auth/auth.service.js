@@ -58,6 +58,7 @@ async function register({ email, name, password, userRole }) {
           create: {
             email: email,
             name: name,
+            role: userRole,
             password: hash,
           },
         },

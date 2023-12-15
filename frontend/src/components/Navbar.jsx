@@ -11,7 +11,7 @@ import {
 	Tooltip,
 	Typography,
 } from '@mui/material';
-import { Link,useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import BookIcon from '@mui/icons-material/Book';
 import { Context } from '../state/context/GlobalContext/Context';
@@ -27,7 +27,7 @@ export default function Navbar(){
 	const locationPath = useLocation().pathname;
 
 	const {
-		context: { role,name },
+		context: { role, name },
 	} = useContext(Context);
 
 	const { logout } = useAuth();
@@ -60,13 +60,13 @@ export default function Navbar(){
 			.filter((route) => route.title && route.roles?.includes(role))
 			.map((route) => (
 				<Link
-					to={route.path}
-					key={route.title}
-					style={{ textDecoration: 'none',color: 'black' }}
+					to={ route.path }
+					key={ route.title }
+					style={{ textDecoration: 'none', color: 'black' }}
 				>
 					<MenuItem
-						selected={locationPath === route.path}
-						onClick={handleCloseNavMenu}
+						selected={ locationPath === route.path }
+						onClick={ handleCloseNavMenu }
 					>
 						{route.title}
 					</MenuItem>
@@ -79,14 +79,15 @@ export default function Navbar(){
 			.filter((route) => route.title && route.roles?.includes(role))
 			.map((route) => (
 				<Link
-					to={route.path}
-					key={route.title}
+					to={ route.path }
+					key={ route.title }
 					style={{ textDecoration: 'none' }}>
 					<Button
-						onClick={handleCloseNavMenu}
+						onClick={ handleCloseNavMenu }
 						sx={{
 							my: 2,
 							color: route.path === locationPath ? theme.palette.textColor.selected : theme.palette.textColor.main,
+							fontWeight: route.path === locationPath ? 700 : 500,
 							display: 'block'
 						}}
 					>
@@ -124,14 +125,14 @@ export default function Navbar(){
 							aria-label='account of current user'
 							aria-controls='menu-appbar'
 							aria-haspopup='true'
-							onClick={handleOpenNavMenu}
+							onClick={ handleOpenNavMenu }
 							color='inherit'
 						>
 							<MenuIcon/>
 						</IconButton>
 						<Menu
 							id='menu-appbar'
-							anchorEl={anchorElNav}
+							anchorEl={ anchorElNav }
 							anchorOrigin={{
 								vertical: 'bottom',
 								horizontal: 'left',
@@ -141,8 +142,8 @@ export default function Navbar(){
 								vertical: 'top',
 								horizontal: 'left',
 							}}
-							open={Boolean(anchorElNav)}
-							onClose={handleCloseNavMenu}
+							open={ Boolean(anchorElNav) }
+							onClose={ handleCloseNavMenu }
 							sx={{
 								display: { xs: 'block', md: 'none' },
 							}}
@@ -175,15 +176,15 @@ export default function Navbar(){
 					<Box sx={{ flexGrow: 0 }}>
 						<Tooltip title='Open settings'>
 							<IconButton
-								onClick={handleOpenUserMenu}
+								onClick={ handleOpenUserMenu }
 								sx={{ p: 0 }}>
-								<Avatar {...stringAvatar(name)}/>
+								<Avatar { ...stringAvatar(name) }/>
 							</IconButton>
 						</Tooltip>
 						<Menu
 							sx={{ mt: '45px' }}
 							id='menu-appbar'
-							anchorEl={anchorElUser}
+							anchorEl={ anchorElUser }
 							anchorOrigin={{
 								vertical: 'top',
 								horizontal: 'right',
@@ -193,11 +194,11 @@ export default function Navbar(){
 								vertical: 'top',
 								horizontal: 'right',
 							}}
-							open={Boolean(anchorElUser)}
-							onClose={handleCloseUserMenu}
+							open={ Boolean(anchorElUser) }
+							onClose={ handleCloseUserMenu }
 						>
 							<MenuItem
-								onClick={handleLogout}>
+								onClick={ handleLogout }>
 								<Typography textAlign='center'>Logout</Typography>
 							</MenuItem>
 						</Menu>

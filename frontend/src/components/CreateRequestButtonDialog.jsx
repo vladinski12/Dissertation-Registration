@@ -1,4 +1,4 @@
-import { Button,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle,TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import API from '../app/api';
 import SendIcon from '@mui/icons-material/Send';
 import { showToast } from './templates/ToastMessage';
@@ -55,13 +55,13 @@ const CreateRequestButtonDialog = ({ professor }) => {
 					lineHeight: '1rem',
 				}}
 				variant="contained"
-				endIcon={<SendIcon/>}
-				onClick={handleClickOpen}>
+				endIcon={ <SendIcon/> }
+				onClick={ handleClickOpen }>
 				Send request
 			</Button>
 			<Dialog
-				open={open}
-				onClose={handleClose}>
+				open={ open }
+				onClose={ handleClose }>
 				<DialogTitle>Send dissertation request</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
@@ -75,13 +75,13 @@ const CreateRequestButtonDialog = ({ professor }) => {
 						type="text"
 						fullWidth
 						variant="standard"
-						value={studentMessage}
-						onChange={(event) => setStudentMessage(event.target.value)}
+						value={ studentMessage }
+						onChange={ (event) => setStudentMessage(event.target.value) }
 					/>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleClose}>Cancel</Button>
-					<Button onClick={createRequest}>Send</Button>
+					<Button onClick={ handleClose }>Cancel</Button>
+					<Button onClick={ createRequest }>Send</Button>
 				</DialogActions>
 			</Dialog>
 		</>

@@ -1,5 +1,6 @@
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import FormikBase from '../components/templates/FormikBase';
+import { Link } from 'react-router-dom';
 import { loginSchema } from '../utils/yupSchemas.js';
 import { loginSubmitHandler } from '../utils/calls/authCalls.js';
 import useAuth from '../state/hooks/useAuth.js';
@@ -26,10 +27,12 @@ export default function Login() {
 				alignItems: 'center',
 			}}
 		>
+			<Typography
+				variant='h1'>Login</Typography>
 			<FormikBase
 				initialValues={{ email: '', password: '' }}
-				validationSchema={loginSchema}
-				onSubmit={submitHandler}
+				validationSchema={ loginSchema }
+				onSubmit={ submitHandler }
 			>
 				{({
 					values,
@@ -58,12 +61,13 @@ export default function Login() {
 							id='email'
 							label='Email'
 							variant='outlined'
+							type='email'
 							autoComplete='email'
-							onChange={handleChange}
-							onBlur={handleBlur}
-							value={values.email}
-							error={touched.email && Boolean(errors.email)}
-							helperText={touched.email && errors.email}
+							onChange={ handleChange }
+							onBlur={ handleBlur }
+							value={ values.email }
+							error={ touched.email && Boolean(errors.email) }
+							helperText={ touched.email && errors.email }
 						></TextField>
 						<TextField
 							id='password'
@@ -71,18 +75,20 @@ export default function Login() {
 							variant='outlined'
 							type='password'
 							autoComplete='current-password'
-							onChange={handleChange}
-							onBlur={handleBlur}
-							value={values.password}
-							error={touched.password && Boolean(errors.password)}
-							helperText={touched.password && errors.password}
+							onChange={ handleChange }
+							onBlur={ handleBlur }
+							value={ values.password }
+							error={ touched.password && Boolean(errors.password) }
+							helperText={ touched.password && errors.password }
 						></TextField>
 						<Button
 							type='submit'
-							onClick={handleSubmit}>LOGIN</Button>
+							onClick={ handleSubmit }
+							sx={{ my: 2 }}>LOGIN</Button>
 					</Box>
 				)}
 			</FormikBase>
+			<Link to='/register'>Register</Link>
 		</Box>
 	);
 }

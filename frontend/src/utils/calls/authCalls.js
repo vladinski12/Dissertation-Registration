@@ -16,3 +16,20 @@ export const loginSubmitHandler = async (values, helpers) => {
 		showToast(err?.response?.data?.message, 'error');
 	}
 };
+
+export const registerSubmitHandler = async (values, helpers) => {
+	try {
+		const response = await API.auth.register(values, {
+			headers: { 'Content-Type': 'application/json' },
+		});
+		if(response?.status === 200) {
+			showToast('Registration successful', 'success');
+			return true;
+		}
+	} catch (err) {
+		if (err?.response?.status === 400) {
+			return helpers.setFieldError('email', 'Email already exists');
+		}
+		showToast(err?.response?.data?.message, 'error');
+	}
+};

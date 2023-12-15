@@ -6,10 +6,22 @@ export const initialState = {
 	name: '',
 };
 
+export const disserationRequestsInitialState = {
+	isLoadingDissertationRequests: true,
+	dissertationRequests: [],
+};
+
+export const approvedDisserationRequestsInitialState = {
+	isLoadingApprovedDissertationRequests: true,
+	approvedDissertationRequests: [],
+};
+
 export const UserRole = {
 	PROFESSOR: 'PROFESSOR',
 	STUDENT: 'STUDENT',
 };
+
+export const UserRoleArray = [UserRole.PROFESSOR, UserRole.STUDENT];
 
 export const DissertationRequestStatus = {
 	PENDING_APPROVAL: 'PENDING_APPROVAL',
@@ -42,3 +54,5 @@ export function stringAvatar(name) {
 		children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
 	};
 }
+
+export const MAX_NUMBER_OF_APPROVED_REQUESTS = 15;

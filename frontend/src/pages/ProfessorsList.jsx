@@ -1,4 +1,4 @@
-import { Container,Divider, List,ListItem, Stack,Typography } from '@mui/material';
+import { Container, Divider, List, ListItem, Stack, Typography } from '@mui/material';
 import { Fragment,  useEffect, useState } from 'react';
 import API from '../app/api';
 import CreateRequestButtonDialog from '../components/CreateRequestButtonDialog';
@@ -26,7 +26,7 @@ const ProfessorsList = () => {
 				showToast(error?.response?.data?.message, 'error');
 			}
 		})();
-	},[]);
+	}, []);
 
 	return (
 		<Container
@@ -40,10 +40,10 @@ const ProfessorsList = () => {
 				{professors.map((professor) => {
 					const availableUntil = professor.RegistrationSessions.find((registrationSession) => new Date(registrationSession.startDate) < Date.now() && new Date(registrationSession.endDate) > Date.now() )?.endDate;
 					return(
-						<Fragment key={professor.id}>
+						<Fragment key={ professor.id }>
 							<Stack
 								direction="row"
-								spacing={3}>
+								spacing={ 3 }>
 								<ListItem
 									alignItems="flex-start"
 									sx={{
@@ -70,7 +70,7 @@ const ProfessorsList = () => {
 									</Typography>
 								</ListItem>
 								<CreateRequestButtonDialog
-									professor={professor}
+									professor={ professor }
 								/>
 							</Stack>
 							<Divider

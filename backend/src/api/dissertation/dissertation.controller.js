@@ -31,9 +31,22 @@ export async function getDissertationRequests(req, res, next) {
   }
 }
 
+export async function getApprovedDissertationRequests(req, res, next) {
+  try {
+    const userId = req.user.id;
+    res
+      .status(200)
+      .json(
+        await DissertationService.getApprovedDissertationRequests(userId)
+      );
+  } catch (err) {
+    next(err);
+  }
+}
+
 export async function handlePreliminaryDissertationRequest(req, res, next) {
   try {
-    const professorId = req.user.id;
+    const userId = req.user.id;
     const dissertationRequestId = Number(req.params.dissertationRequestId);
     const status = req.body.status;
     let declinedReason;
@@ -43,7 +56,7 @@ export async function handlePreliminaryDissertationRequest(req, res, next) {
       .status(200)
       .json(
         await DissertationService.handlePreliminaryDissertationRequest(
-          professorId,
+          userId,
           dissertationRequestId,
           status,
           declinedReason

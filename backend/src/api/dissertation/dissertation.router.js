@@ -29,6 +29,13 @@ DissertationRouter.get(
   DissertationController.getDissertationRequests
 );
 
+DissertationRouter.get(
+  '/get-approved-dissertation-requests',
+  AuthMiddleware,
+  RoleMiddleware([UserRole.PROFESSOR]),
+  DissertationController.getApprovedDissertationRequests
+);
+
 DissertationRouter.post(
   '/handle-preliminary-dissertation-request/:dissertationRequestId',
   AuthMiddleware,

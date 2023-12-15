@@ -36,9 +36,22 @@ export async function createDissertationRequest(
     );
   }
 
+  if (
+    student.DissertationRequests?.filter(
+      (dissertationRequest) =>
+        dissertationRequest.status === DissertationRequestStatus.DECLINED &&
+        dissertationRequest.professorId === professorId
+    ).length > 0
+  ) {
+    throw new HttpException(
+      'Student already has declined dissertation request',
+      400
+    );
+  }
+
   const professor = await Prisma.professor.findUnique({
     where: {
-      userId: professorId,
+      id: professorId,
     },
     include: {
       DissertationRequests: true,
@@ -118,6 +131,28 @@ export async function getDissertationRequests(userId) {
 
   if (user.role === UserRole.PROFESSOR) {
     const professor = await Prisma.professor.findUnique({
+      select: {
+        DissertationRequests: {
+          select: {
+            id: true,
+            status: true,
+            studentMessage: true,
+            declinedReason: true,
+            createdAt: true,
+            student: {
+              select: {
+                id: true,
+                user: {
+                  select: {
+                    email: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
       where: {
         userId: user.id,
       },
@@ -125,37 +160,32 @@ export async function getDissertationRequests(userId) {
     if (!professor) {
       throw new HttpException('Professor not found', 404);
     }
-    const dissertationRequests = await Prisma.dissertationRequests.findMany({
-      where: {
-        professorId: professor.id,
-      },
-    });
 
-    return Promise.all(
-      dissertationRequests.map(async (dissertationRequest) => ({
-        ...dissertationRequest,
-        student: await Prisma.student.findUnique({
-          where: {
-            id: dissertationRequest.studentId,
-          },
-          include: {
-            user: {
+    return professor;
+  } else if (user.role === UserRole.STUDENT) {
+    const student = await Prisma.student.findUnique({
+      select: {
+        DissertationRequests: {
+          select: {
+            id: true,
+            status: true,
+            studentMessage: true,
+            declinedReason: true,
+            createdAt: true,
+            professor: {
               select: {
                 id: true,
-                email: true,
-                name: true,
+                user: {
+                  select: {
+                    email: true,
+                    name: true,
+                  },
+                },
               },
             },
           },
-        }),
-        professor: {
-          ...professor,
-          user,
         },
-      }))
-    );
-  } else if (user.role === UserRole.STUDENT) {
-    const student = await Prisma.student.findUnique({
+      },
       where: {
         userId: user.id,
       },
@@ -163,39 +193,73 @@ export async function getDissertationRequests(userId) {
     if (!student) {
       throw new HttpException('Student not found', 404);
     }
-    const dissertationRequests = await Prisma.dissertationRequests.findMany({
-      where: {
-        studentId: student.id,
-      },
-    });
-    return Promise.all(
-      dissertationRequests.map(async (dissertationRequest) => ({
-        ...dissertationRequest,
-        student: {
-          ...student,
-          user,
-        },
-        professor: await Prisma.professor.findUnique({
-          where: {
-            id: dissertationRequest.professorId,
-          },
-          include: {
-            user: {
-              select: {
-                id: true,
-                email: true,
-                name: true,
-              },
-            },
-          },
-        }),
-      }))
-    );
+
+    return student;
   }
 }
 
+export async function getApprovedDissertationRequests(userId) {
+  const user = await Prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (!user) {
+    throw new HttpException('User not found', 404);
+  }
+
+  if (user.role !== UserRole.PROFESSOR) {
+    throw new HttpException('User is not a professor', 400);
+  }
+
+  const professor = await Prisma.professor.findUnique({
+    select: {
+      DissertationRequests: {
+        select: {
+          id: true,
+          status: true,
+          createdAt: true,
+          student: {
+            select: {
+              id: true,
+              user: {
+                select: {
+                  email: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    where: {
+      userId: user.id,
+    },
+  });
+  if (!professor) {
+    throw new HttpException('Professor not found', 404);
+  }
+  console.log(professor.DissertationRequests);
+
+  return professor.DissertationRequests.filter(
+    (dissertationRequest) =>
+      dissertationRequest.status === DissertationRequestStatus.APPROVED ||
+      dissertationRequest.status ===
+        DissertationRequestStatus.APPROVED_REJECTED ||
+      dissertationRequest.status ===
+        DissertationRequestStatus.FILE_UPLOADED_BY_STUDENT ||
+      dissertationRequest.status ===
+        DissertationRequestStatus.FILE_UPLOADED_BY_PROFESSOR
+  ).map((dissertationRequest) => ({
+    ...dissertationRequest,
+    student: dissertationRequest.student,
+  }));
+}
+
 export async function handlePreliminaryDissertationRequest(
-  professorId,
+  userId,
   dissertationRequestId,
   status,
   declinedReason
@@ -207,9 +271,24 @@ export async function handlePreliminaryDissertationRequest(
     throw new HttpException('Invalid status', 400);
   }
 
+  const user = await Prisma.user.findUnique({
+    select: {
+      id: true,
+      role: true,
+      Professor: true,
+    },
+    where: {
+      id: userId,
+    },
+  });
+
+  if (!user) {
+    throw new HttpException('User not found', 404);
+  }
+
   const professor = await Prisma.professor.findUnique({
     where: {
-      id: professorId,
+      id: user.Professor.id,
     },
     include: {
       DissertationRequests: true,

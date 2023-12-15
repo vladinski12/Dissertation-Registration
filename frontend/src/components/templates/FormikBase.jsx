@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
 
-export default function FormikBase({ initialValues,validationSchema,onSubmit,children,...props }){
+export default function FormikBase({ initialValues, validationSchema, onSubmit, children, ...props }){
 	return(
 		<Formik
 			initialValues={ initialValues }

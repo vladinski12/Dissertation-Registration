@@ -23,7 +23,7 @@
 		"space-infix-ops": ["error", { "int32Hint": false }],
 		"object-curly-spacing": ["error", "always"],
 		"sort-imports": [
-			"error",
+			"warn",
 			{
 				"ignoreCase": false,
 				"ignoreDeclarationSort": false,
@@ -32,6 +32,7 @@
 			}
 		],
 		"camelcase": "warn",
+		"comma-spacing": ["error", { "before": false, "after": true }],
 		"spaced-comment": "warn",
 		"no-duplicate-imports": "error",
 		"react-hooks/rules-of-hooks": "error",
@@ -82,15 +83,15 @@
 		"react/prefer-read-only-props": ["error"],
 		"react/require-render-return": ["error"],
 		"react/state-in-constructor": ["error"],
-		// "react/jsx-curly-spacing": [
-		// 	2,
-		// 	{
-		// 		"when": "always",
-		// 		"spacing": {
-		// 			"objectLiterals": "never"
-		// 		}
-		// 	}
-		// ],
+		"react/jsx-curly-spacing": [
+			2,
+			{
+				"when": "always",
+				"spacing": {
+					"objectLiterals": "never"
+				}
+			}
+		],
 		"react/jsx-indent": ["error", "tab"],
 		"react/jsx-key": ["error"],
 		"react/jsx-no-duplicate-props": ["error"],

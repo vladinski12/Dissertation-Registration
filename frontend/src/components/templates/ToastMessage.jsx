@@ -1,5 +1,5 @@
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer,toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { useEffect } from 'react';
 
 const toastConfig = {
@@ -11,7 +11,7 @@ const toastConfig = {
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const showToast = (message,type) => {
+export const showToast = (message, type) => {
 	if(message.length > 0){
 		switch (type) {
 			case 'success':
@@ -29,10 +29,10 @@ export const showToast = (message,type) => {
 	}
 };
 
-const ToastMessage = ({ message,type }) => {
+const ToastMessage = ({ message, type }) => {
 	useEffect(() => {
-		showToast(message,type);
-	}, [message,type]);
+		showToast(message, type);
+	}, [message, type]);
 
 	return <ToastContainer/>;
 };
