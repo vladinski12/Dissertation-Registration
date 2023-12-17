@@ -1,29 +1,33 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
-import { useContext, useState } from 'react';
-import { DissertationRequestsContext } from '../state/context/DissertationRequestsContext/DissertationRequestsContext';
-import { showToast } from './templates/ToastMessage';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, } from '@mui/material';
+import { useCallback, useContext, useState, } from 'react';
+import { DissertationRequestsContext, } from '../state/context/DissertationRequestsContext/DissertationRequestsContext';
+import { showToast, } from './templates/ToastMessage';
 
-export default function DeclinePreliminaryRequestButtonDialog({ dissertationRequest }){
-	const { declineDissertationRequest } = useContext(DissertationRequestsContext);
+export default function DeclinePreliminaryRequestButtonDialog({ dissertationRequest, }){
+	const { declineDissertationRequest, } = useContext(DissertationRequestsContext);
 	const [open, setOpen] = useState(false);
 	const [declinedReason, setDeclinedReason] = useState('');
 
-	const declineRequest = async () => {
+	const declineRequest = useCallback(async () => {
 		if (!declinedReason.trim() || declinedReason.trim().length < 10 || declinedReason.trim().length > 255) {
 			showToast('Please enter a reason more than 10 and less than 255 characters', 'warning');
 			return;
 		}
 		declineDissertationRequest(dissertationRequest.id, declinedReason);
 		setOpen(false);
-	};
+	}, []);
 
-	const handleClickOpen = () => {
+	const handleClickOpen = useCallback(() => {
 		setOpen(true);
-	};
+	}, []);
 
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		setOpen(false);
-	};
+	}, []);
+
+	const handleDeclinedReasonChange = useCallback((event) => {
+		setDeclinedReason(event.target.value);
+	}, []);
 
 	return (
 		<>
@@ -54,7 +58,7 @@ export default function DeclinePreliminaryRequestButtonDialog({ dissertationRequ
 						fullWidth
 						variant="standard"
 						value={ declinedReason }
-						onChange={ (event) => setDeclinedReason(event.target.value) }
+						onChange={ handleDeclinedReasonChange }
 					/>
 				</DialogContent>
 				<DialogActions>

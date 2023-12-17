@@ -172,6 +172,7 @@ export async function getDissertationRequests(userId) {
             studentMessage: true,
             declinedReason: true,
             createdAt: true,
+            updatedAt: true,
             professor: {
               select: {
                 id: true,
@@ -241,7 +242,6 @@ export async function getApprovedDissertationRequests(userId) {
   if (!professor) {
     throw new HttpException('Professor not found', 404);
   }
-  console.log(professor.DissertationRequests);
 
   return professor.DissertationRequests.filter(
     (dissertationRequest) =>
@@ -339,11 +339,11 @@ export async function uploadDissertationRequest(
   path
 ) {
   const student = await Prisma.student.findUnique({
-    where: {
-      id: studentId,
+    select: {
+      DissertationRequests: true,
     },
-    include: {
-      dissertationRequests: true,
+    where: {
+      userId: studentId,
     },
   });
 
@@ -351,24 +351,32 @@ export async function uploadDissertationRequest(
     throw new HttpException('Student not found', 404);
   }
 
-  const dissertationRequest = student.dissertationRequests.find(
+  const dissertationRequest = student.DissertationRequests.find(
     (dissertationRequest) => dissertationRequest.id === dissertationRequestId
   );
 
-  if (
-    !dissertationRequest ||
-    student.dissertationRequests.find(
-      (dissertationRequest) => dissertationRequest.id !== dissertationRequestId
-    )
-  ) {
+  if (!dissertationRequest) {
     throw new HttpException('Dissertation request not found', 404);
   }
 
-  if (dissertationRequest.status !== DissertationRequestStatus.APPROVED) {
+  if (
+    dissertationRequest.status !== DissertationRequestStatus.APPROVED &&
+    dissertationRequest.status !== DissertationRequestStatus.APPROVED_REJECTED
+  ) {
     throw new HttpException('Dissertation request is not approved', 400);
   }
 
-  const file = await Prisma.file.create({
+  if (
+    dissertationRequest.status === DissertationRequestStatus.APPROVED_REJECTED
+  ) {
+    await Prisma.files.delete({
+      where: {
+        id: dissertationRequest.studentFileId,
+      },
+    });
+  }
+
+  const file = await Prisma.files.create({
     data: {
       filename,
       path,
@@ -390,27 +398,16 @@ export async function uploadDissertationRequest(
   });
 }
 
-export async function handleUploadedDissertationRequest(
+export async function declineDissertationRequest(
   professorId,
-  dissertationRequestId,
-  status,
-  declinedReason,
-  filename,
-  path
+  dissertationRequestId
 ) {
-  if (
-    status !== DissertationRequestStatus.APPROVED_REJECTED &&
-    status !== DissertationRequestStatus.FILE_UPLOADED_BY_PROFESSOR
-  ) {
-    throw new HttpException('Invalid status', 400);
-  }
-
   const professor = await Prisma.professor.findUnique({
-    where: {
-      id: professorId,
-    },
-    include: {
+    select: {
       DissertationRequests: true,
+    },
+    where: {
+      userId: professorId,
     },
   });
 
@@ -427,12 +424,74 @@ export async function handleUploadedDissertationRequest(
   }
 
   if (
-    dissertationRequest.status !== DissertationRequestStatus.APPROVED_REJECTED
+    dissertationRequest.status !==
+    DissertationRequestStatus.FILE_UPLOADED_BY_STUDENT
   ) {
-    throw new HttpException('Dissertation request is not pending', 400);
+    throw new HttpException(
+      'Dissertation request cannot be modified in this state',
+      400
+    );
   }
 
-  const file = await Prisma.file.create({
+  return Prisma.dissertationRequests.update({
+    where: {
+      id: dissertationRequestId,
+    },
+    data: {
+      status: DissertationRequestStatus.APPROVED_REJECTED,
+    },
+  });
+}
+
+export async function uploadApprovedDissertationRequest(
+  professorId,
+  dissertationRequestId,
+  status,
+  filename,
+  path
+) {
+  if (status !== DissertationRequestStatus.FILE_UPLOADED_BY_PROFESSOR) {
+    throw new HttpException('Invalid status', 400);
+  }
+
+  const professor = await Prisma.professor.findUnique({
+    select: {
+      DissertationRequests: true,
+    },
+    where: {
+      userId: professorId,
+    },
+  });
+
+  if (!professor) {
+    throw new HttpException('Professor not found', 404);
+  }
+
+  const dissertationRequest = professor.DissertationRequests.find(
+    (dissertationRequest) => dissertationRequest.id === dissertationRequestId
+  );
+
+  if (!dissertationRequest) {
+    throw new HttpException('Dissertation request not found', 404);
+  }
+
+  if (
+    dissertationRequest.status !==
+    DissertationRequestStatus.FILE_UPLOADED_BY_STUDENT
+  ) {
+    throw new HttpException(
+      'Dissertation request cannot be modified in this state',
+      400
+    );
+  }
+
+  if (!filename && !path) {
+    throw new HttpException('File is required', 400);
+  }
+
+  let file;
+
+  file = await Prisma.files.create({
     data: {
       filename,
       path,
@@ -445,12 +504,7 @@ export async function handleUploadedDissertationRequest(
     },
     data: {
       status,
-      declinedReason: declinedReason || undefined,
-      professorFile: {
-        connect: {
-          id: file.id,
-        },
-      },
+      professorFileId: file?.id || undefined,
     },
   });
 }

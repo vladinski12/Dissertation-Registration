@@ -19,6 +19,12 @@ export const API_ROUTES = {
 		createDissertationRequest: 'dissertation/create-dissertation-request',
 		handlePreliminaryDissertationRequest: (id) =>
 			`dissertation/handle-preliminary-dissertation-request/${id}`,
+		uploadDissertationRequestFile: (id) =>
+			`dissertation/upload-dissertation-request/${id}`,
+		declineDissertationRequest: (id) =>
+			`dissertation/decline-dissertation-request/${id}`,
+		uploadApprovedDissertationRequest: (id) =>
+			`dissertation/upload-approved-dissertation-request/${id}`,
 	},
 	professors: {
 		getProfessors: 'professor/available-professors',

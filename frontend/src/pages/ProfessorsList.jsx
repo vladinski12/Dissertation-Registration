@@ -1,9 +1,9 @@
-import { Container, Divider, List, ListItem, Stack, Typography } from '@mui/material';
-import { Fragment,  useEffect, useState } from 'react';
+import { Container, Divider, List, ListItem, Stack, Typography, } from '@mui/material';
+import { Fragment,  useEffect, useState, } from 'react';
 import API from '../app/api';
 import CreateRequestButtonDialog from '../components/CreateRequestButtonDialog';
-import { formatDate } from '../utils/dateHelpers';
-import { showToast } from '../components/templates/ToastMessage';
+import { formatDate, } from '../utils/dateHelpers';
+import { showToast, } from '../components/templates/ToastMessage';
 
 const ProfessorsList = () => {
 	const [professors, setProfessors] = useState([]);
@@ -55,14 +55,14 @@ const ProfessorsList = () => {
 										{professor.user.name}
 									</Typography>
 									<Typography
-										sx={{ display: 'inline' }}
+										sx={{ display: 'inline', }}
 										component="span"
 										variant="body2"
 										color="text.primary">
 										{professor.user.email}
 									</Typography>
 									<Typography
-										sx={{ display: 'inline' }}
+										sx={{ display: 'inline', }}
 										component="span"
 										variant="body2"
 										color="text.primary">

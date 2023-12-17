@@ -1,10 +1,10 @@
 import API from '../../app/api';
-import { showToast } from '../../components/templates/ToastMessage';
+import { showToast, } from '../../components/templates/ToastMessage';
 
 export const loginSubmitHandler = async (values, helpers) => {
 	try {
 		const response = await API.auth.login(values, {
-			headers: { 'Content-Type': 'application/json' },
+			headers: { 'Content-Type': 'application/json', },
 		});
 		if (response?.data) {
 			return response.data.access_token;
@@ -20,7 +20,7 @@ export const loginSubmitHandler = async (values, helpers) => {
 export const registerSubmitHandler = async (values, helpers) => {
 	try {
 		const response = await API.auth.register(values, {
-			headers: { 'Content-Type': 'application/json' },
+			headers: { 'Content-Type': 'application/json', },
 		});
 		if(response?.status === 200) {
 			showToast('Registration successful', 'success');

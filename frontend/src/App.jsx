@@ -8,11 +8,11 @@ import {
 	BrowserRouter as Router,
 	Routes,
 } from 'react-router-dom';
-import React, { useContext } from 'react';
-import { APP_ROUTES } from './app/routes';
-import { Box } from '@mui/material';
-import { Context } from './state/context/GlobalContext/Context';
-import { Helmet } from 'react-helmet-async';
+import React, { useContext, } from 'react';
+import { APP_ROUTES, } from './app/routes';
+import { Box, } from '@mui/material';
+import { Context, } from './state/context/GlobalContext/Context';
+import { Helmet, } from 'react-helmet-async';
 import Loading from './components/templates/Loading';
 import Login from './pages/Login';
 import Navbar from './components/Navbar';
@@ -51,7 +51,7 @@ const ProtectedRoutes = () => {
 
 function App() {
 	const {
-		context: { isLoggedIn, isLoading },
+		context: { isLoggedIn, isLoading, },
 	} = useContext(Context);
 
 	function loadingHandler(next, fallback) {

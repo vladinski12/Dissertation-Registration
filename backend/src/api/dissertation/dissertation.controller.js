@@ -36,9 +36,7 @@ export async function getApprovedDissertationRequests(req, res, next) {
     const userId = req.user.id;
     res
       .status(200)
-      .json(
-        await DissertationService.getApprovedDissertationRequests(userId)
-      );
+      .json(await DissertationService.getApprovedDissertationRequests(userId));
   } catch (err) {
     next(err);
   }
@@ -70,7 +68,7 @@ export async function handlePreliminaryDissertationRequest(req, res, next) {
 export async function uploadDissertationRequest(req, res, next) {
   try {
     const studentId = req.user.id;
-    const dissertationRequestId = req.params.dissertationRequestId;
+    const dissertationRequestId = Number(req.params.dissertationRequestId);
     const { filename, path } = req.file;
     res
       .status(200)
@@ -87,23 +85,36 @@ export async function uploadDissertationRequest(req, res, next) {
   }
 }
 
-export async function handleUploadedDissertationRequest(req, res, next) {
+export async function declineDissertationRequest(req, res, next) {
   try {
     const professorId = req.user.id;
-    const dissertationRequestId = req.params.dissertationRequestId;
+    const dissertationRequestId = Number(req.params.dissertationRequestId);
+    res
+      .status(200)
+      .json(
+        await DissertationService.declineDissertationRequest(
+          professorId,
+          dissertationRequestId
+        )
+      );
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function uploadApprovedDissertationRequest(req, res, next) {
+  try {
+    const professorId = req.user.id;
+    const dissertationRequestId = Number(req.params.dissertationRequestId);
     const status = req.body.status;
-    let declinedReason;
-    if (status === DissertationRequestStatus.APPROVED_REJECTED)
-      declinedReason = req.body.declinedReason;
     const { filename, path } = req.file;
     res
       .status(200)
       .json(
-        await DissertationService.handleUploadedDissertationRequest(
+        await DissertationService.uploadApprovedDissertationRequest(
           professorId,
           dissertationRequestId,
           status,
-          declinedReason,
           filename,
           path
         )

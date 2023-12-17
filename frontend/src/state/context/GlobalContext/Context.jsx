@@ -14,11 +14,11 @@ import {
 } from '../../actions/globalActions';
 import API from '../../../app/api';
 import globalReducer from '../reducers/globalReducer';
-import { initialState } from '../../../utils/constants';
+import { initialState, } from '../../../utils/constants';
 
-export const Context = createContext({ context: initialState });
+export const Context = createContext({ context: initialState, });
 
-const Provider = ({ children }) => {
+const Provider = ({ children, }) => {
 	const [context, dispatch] = useReducer(globalReducer, initialState);
 
 	const authorize = useCallback(async () => {

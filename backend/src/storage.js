@@ -11,6 +11,21 @@ const storage = multer.diskStorage({
     );
   },
 });
-const UploadFile = multer({ storage, limits: { fileSize: MAX_FILE_SIZE } });
+const UploadFile = multer({
+  storage,
+  limits: { fileSize: MAX_FILE_SIZE },
+  fileFilter: function (_req, file, cb) {
+    const fileTypes = /pdf/;
+    const extname = fileTypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    const mimetype = fileTypes.test(file.mimetype);
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      return cb(new Error('File type not supported'));
+    }
+  },
+});
 
 export default UploadFile;

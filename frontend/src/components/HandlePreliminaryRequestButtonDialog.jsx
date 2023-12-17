@@ -1,32 +1,32 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tooltip } from '@mui/material';
-import { DissertationRequestStatus, UserRole } from '../utils/constants';
-import  { useContext, useState } from 'react';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tooltip, } from '@mui/material';
+import { DissertationRequestStatus, UserRole, } from '../utils/constants';
+import  { useCallback, useContext, useState, } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { Context } from '../state/context/GlobalContext/Context';
+import { Context, } from '../state/context/GlobalContext/Context';
 import DeclinePreliminaryRequestButtonDialog from './DeclinePreliminaryRequestButtonDialog';
-import { DissertationRequestsContext } from '../state/context/DissertationRequestsContext/DissertationRequestsContext';
+import { DissertationRequestsContext, } from '../state/context/DissertationRequestsContext/DissertationRequestsContext';
 import MessageIcon from '@mui/icons-material/Message';
 
-export default function HandlePreliminaryRequestButtonDialog({ dissertationRequest }){
+export default function HandlePreliminaryRequestButtonDialog({ dissertationRequest, }){
 	const {
-		context: { role },
+		context: { role, },
 	} = useContext(Context);
-	const { approveDissertationRequest } = useContext(DissertationRequestsContext);
+	const { approveDissertationRequest, } = useContext(DissertationRequestsContext);
 
 	const [open, setOpen] = useState(false);
 
-	const handleClickOpen = () => {
+	const handleClickOpen = useCallback(() => {
 		setOpen(true);
-	};
+	}, []);
 
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		setOpen(false);
-	};
+	}, []);
 
-	const handleApprove = async () => {
+	const handleApprove = useCallback(() => {
 		approveDissertationRequest(dissertationRequest.id);
 		setOpen(false);
-	};
+	}, []);
 
 	return (<>
 		<Button
@@ -43,7 +43,7 @@ export default function HandlePreliminaryRequestButtonDialog({ dissertationReque
 		<Dialog
 			open={ open }
 			onClose={ handleClose }>
-			<DialogTitle sx={{ m: 0, pr: 6 }}>Message {role === UserRole.PROFESSOR ? `from ${dissertationRequest.student.user.name}` : `to ${dissertationRequest.professor.user.name}`} {}</DialogTitle>
+			<DialogTitle sx={{ m: 0, pr: 6, }}>Message {role === UserRole.PROFESSOR ? `from ${dissertationRequest.student.user.name}` : `to ${dissertationRequest.professor.user.name}`} {}</DialogTitle>
 			<Tooltip title="Close">
 				<IconButton
 					aria-label="close"

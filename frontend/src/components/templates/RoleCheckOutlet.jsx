@@ -1,10 +1,10 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { APP_ROUTES } from '../../app/routes.js';
-import { Context } from '../../state/context/GlobalContext/Context';
-import { useContext } from 'react';
+import { Navigate, Outlet, } from 'react-router-dom';
+import { APP_ROUTES, } from '../../app/routes.js';
+import { Context, } from '../../state/context/GlobalContext/Context';
+import { useContext, } from 'react';
 
-export default function RoleCheckOutlet({ route }){
-	const { context: { role: userRole } } = useContext(Context);
+export default function RoleCheckOutlet({ route, }){
+	const { context: { role: userRole, }, } = useContext(Context);
 
 	if(!route.roles || route?.roles?.length === 0){
 		return <Outlet/>;

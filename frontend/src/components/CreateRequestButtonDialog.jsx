@@ -1,14 +1,14 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, } from '@mui/material';
+import {  useCallback, useState, } from 'react';
 import API from '../app/api';
 import SendIcon from '@mui/icons-material/Send';
-import { showToast } from './templates/ToastMessage';
-import {  useState } from 'react';
+import { showToast, } from './templates/ToastMessage';
 
-const CreateRequestButtonDialog = ({ professor }) => {
+const CreateRequestButtonDialog = ({ professor, }) => {
 	const [open, setOpen] = useState(false);
 	const [studentMessage, setStudentMessage] = useState('');
 
-	const createRequest = async () => {
+	const createRequest = useCallback(async () => {
 		if (!studentMessage.trim() || studentMessage.trim().length < 10 || studentMessage.trim().length > 255) {
 			showToast('Please enter a message more than 10 and less than 255 characters', 'warning');
 			return;
@@ -27,7 +27,7 @@ const CreateRequestButtonDialog = ({ professor }) => {
 				}
 			);
 			if (response.status === 200) {
-				showToast('Disseration request created successfully', 'success');
+				showToast('Dissertation request created successfully', 'success');
 			}else{
 				showToast(response?.data?.message, 'warning');
 			}
@@ -36,15 +36,19 @@ const CreateRequestButtonDialog = ({ professor }) => {
 		}finally{
 			setOpen(false);
 		}
-	};
+	}, []);
 
-	const handleClickOpen = () => {
+	const handleClickOpen = useCallback(() => {
 		setOpen(true);
-	};
+	}, []);
 
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		setOpen(false);
-	};
+	}, []);
+
+	const handleStudentMessageChange = useCallback((event) => {
+		setStudentMessage(event.target.value);
+	}, []);
 
 	return (
 		<>
@@ -76,7 +80,7 @@ const CreateRequestButtonDialog = ({ professor }) => {
 						fullWidth
 						variant="standard"
 						value={ studentMessage }
-						onChange={ (event) => setStudentMessage(event.target.value) }
+						onChange={ handleStudentMessageChange }
 					/>
 				</DialogContent>
 				<DialogActions>

@@ -1,10 +1,10 @@
-import { APP_ROUTES } from './routes';
+import { APP_ROUTES, } from './routes';
 import ApprovedDissertationRequestsList from '../pages/ApprovedDissertationRequestsList';
 import DissertationRequestsList from '../pages/DissertationRequestsList';
 import NotFound from '../pages/NotFound';
 import ProfessorsList from '../pages/ProfessorsList';
-import { UserRole } from '../utils/constants';
 import UploadDissertationRequest from '../pages/UploadDissertationRequest';
+import { UserRole, } from '../utils/constants';
 
 // for professors:
 // - prelimnary dissertation requests list (with the option to accept or reject with a reason a request)
@@ -49,5 +49,5 @@ export default [
 		path: APP_ROUTES.notFound,
 		element: NotFound,
 		headTitle: 'Not Found',
-	},
+	}
 ];

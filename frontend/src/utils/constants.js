@@ -6,12 +6,12 @@ export const initialState = {
 	name: '',
 };
 
-export const disserationRequestsInitialState = {
+export const dissertationRequestsInitialState = {
 	isLoadingDissertationRequests: true,
 	dissertationRequests: [],
 };
 
-export const approvedDisserationRequestsInitialState = {
+export const approvedDissertationRequestsInitialState = {
 	isLoadingApprovedDissertationRequests: true,
 	approvedDissertationRequests: [],
 };

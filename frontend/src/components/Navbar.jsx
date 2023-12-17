@@ -11,15 +11,15 @@ import {
 	Tooltip,
 	Typography,
 } from '@mui/material';
-import { Link, useLocation } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { Link, useLocation, } from 'react-router-dom';
+import { useCallback, useContext, useState, } from 'react';
 import BookIcon from '@mui/icons-material/Book';
-import { Context } from '../state/context/GlobalContext/Context';
+import { Context, } from '../state/context/GlobalContext/Context';
 import MenuIcon from '@mui/icons-material/Menu';
 import routes from '../app/routesConfig';
-import { stringAvatar } from '../utils/constants';
+import { stringAvatar, } from '../utils/constants';
 import useAuth from '../state/hooks/useAuth';
-import { useTheme } from '@mui/material/styles';
+import { useTheme, } from '@mui/material/styles';
 
 export default function Navbar(){
 	const theme = useTheme();
@@ -27,33 +27,34 @@ export default function Navbar(){
 	const locationPath = useLocation().pathname;
 
 	const {
-		context: { role, name },
+		context: { role, name, },
 	} = useContext(Context);
 
-	const { logout } = useAuth();
+	const { logout, } = useAuth();
 
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
 
-	const handleOpenNavMenu = (event) => {
+	const handleOpenNavMenu = useCallback((event) => {
 		setAnchorElNav(event.currentTarget);
-	};
-	const handleOpenUserMenu = (event) => {
+	}, []);
+
+	const handleOpenUserMenu = useCallback((event) => {
 		setAnchorElUser(event.currentTarget);
-	};
+	}, []);
 
-	const handleCloseNavMenu = () => {
+	const handleCloseNavMenu = useCallback(() => {
 		setAnchorElNav(null);
-	};
+	}, []);
 
-	const handleCloseUserMenu = () => {
+	const handleCloseUserMenu = useCallback(() => {
 		setAnchorElUser(null);
-	};
+	}, []);
 
-	const handleLogout = () => {
+	const handleLogout = useCallback(() => {
 		handleCloseUserMenu();
 		logout();
-	};
+	}, []);
 
 	const renderMenuItems = () => {
 		return routes
@@ -62,7 +63,7 @@ export default function Navbar(){
 				<Link
 					to={ route.path }
 					key={ route.title }
-					style={{ textDecoration: 'none', color: 'black' }}
+					style={{ textDecoration: 'none', color: 'black', }}
 				>
 					<MenuItem
 						selected={ locationPath === route.path }
@@ -81,14 +82,14 @@ export default function Navbar(){
 				<Link
 					to={ route.path }
 					key={ route.title }
-					style={{ textDecoration: 'none' }}>
+					style={{ textDecoration: 'none', }}>
 					<Button
 						onClick={ handleCloseNavMenu }
 						sx={{
 							my: 2,
 							color: route.path === locationPath ? theme.palette.textColor.selected : theme.palette.textColor.main,
 							fontWeight: route.path === locationPath ? 700 : 500,
-							display: 'block'
+							display: 'block',
 						}}
 					>
 						{route.title}
@@ -101,7 +102,7 @@ export default function Navbar(){
 		<AppBar position='static'>
 			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
-					<BookIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}/>
+					<BookIcon sx={{ display: { xs: 'none', md: 'flex', }, mr: 1, }}/>
 					<Typography
 						variant='h6'
 						noWrap
@@ -109,7 +110,7 @@ export default function Navbar(){
 						href='/'
 						sx={{
 							mr: 2,
-							display: { xs: 'none', md: 'flex' },
+							display: { xs: 'none', md: 'flex', },
 							fontFamily: 'monospace',
 							fontWeight: 700,
 							letterSpacing: '.3rem',
@@ -119,7 +120,7 @@ export default function Navbar(){
 					>
 						DISSERTATION
 					</Typography>
-					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none', }, }}>
 						<IconButton
 							size='large'
 							aria-label='account of current user'
@@ -145,13 +146,13 @@ export default function Navbar(){
 							open={ Boolean(anchorElNav) }
 							onClose={ handleCloseNavMenu }
 							sx={{
-								display: { xs: 'block', md: 'none' },
+								display: { xs: 'block', md: 'none', },
 							}}
 						>
 							{renderMenuItems()}
 						</Menu>
 					</Box>
-					<BookIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}/>
+					<BookIcon sx={{ display: { xs: 'flex', md: 'none', }, mr: 1, }}/>
 					<Typography
 						variant='h5'
 						noWrap
@@ -159,7 +160,7 @@ export default function Navbar(){
 						href='#app-bar-with-responsive-menu'
 						sx={{
 							mr: 2,
-							display: { xs: 'flex', md: 'none' },
+							display: { xs: 'flex', md: 'none', },
 							flexGrow: 1,
 							fontFamily: 'monospace',
 							fontWeight: 700,
@@ -170,19 +171,19 @@ export default function Navbar(){
 					>
 						LOGO
 					</Typography>
-					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', }, }}>
 						{renderButtonItems()}
 					</Box>
-					<Box sx={{ flexGrow: 0 }}>
+					<Box sx={{ flexGrow: 0, }}>
 						<Tooltip title='Open settings'>
 							<IconButton
 								onClick={ handleOpenUserMenu }
-								sx={{ p: 0 }}>
+								sx={{ p: 0, }}>
 								<Avatar { ...stringAvatar(name) }/>
 							</IconButton>
 						</Tooltip>
 						<Menu
-							sx={{ mt: '45px' }}
+							sx={{ mt: '45px', }}
 							id='menu-appbar'
 							anchorEl={ anchorElUser }
 							anchorOrigin={{

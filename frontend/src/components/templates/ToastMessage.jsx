@@ -1,6 +1,6 @@
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
-import { useEffect } from 'react';
+import { ToastContainer, toast, } from 'react-toastify';
+import { useEffect, } from 'react';
 
 const toastConfig = {
 	position: 'top-right',
@@ -15,13 +15,13 @@ export const showToast = (message, type) => {
 	if(message.length > 0){
 		switch (type) {
 			case 'success':
-				toast.success(message, { ...toastConfig });
+				toast.success(message, { ...toastConfig, });
 				break;
 			case 'warning':
-				toast.warn(message,  { ...toastConfig });
+				toast.warn(message,  { ...toastConfig, });
 				break;
 			case 'error':
-				toast.error(message,  { ...toastConfig });
+				toast.error(message,  { ...toastConfig, });
 				break;
 			default:
 				break;
@@ -29,7 +29,7 @@ export const showToast = (message, type) => {
 	}
 };
 
-const ToastMessage = ({ message, type }) => {
+const ToastMessage = ({ message, type, }) => {
 	useEffect(() => {
 		showToast(message, type);
 	}, [message, type]);

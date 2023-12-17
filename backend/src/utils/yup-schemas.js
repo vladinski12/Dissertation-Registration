@@ -1,8 +1,4 @@
-import {
-  DissertationRequestStatus,
-  DissertationRequestStatusArray,
-  UserRoleArray,
-} from './constants.js';
+import { DissertationRequestStatusArray, UserRoleArray } from './constants.js';
 import { date, number, object, string } from 'yup';
 
 const LoginValidateSchema = object({
@@ -24,13 +20,6 @@ const CreateDissertationRequestValidateSchema = object({
 
 const HandleDissertationRequestValidateSchema = object({
   status: string().max(255).required().oneOf(DissertationRequestStatusArray),
-  declinedReason: string()
-    .min(10)
-    .max(255)
-    .when('status', {
-      is: DissertationRequestStatus.DECLINED,
-      then: () => string().required(),
-    }),
 });
 
 const CreateRegistrationSessionValidateSchema = object({

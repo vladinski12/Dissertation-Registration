@@ -1,4 +1,4 @@
-import { Formik } from 'formik';
+import { Formik, } from 'formik';
 
 export default function FormikBase({ initialValues, validationSchema, onSubmit, children, ...props }){
 	return(
@@ -10,7 +10,7 @@ export default function FormikBase({ initialValues, validationSchema, onSubmit, 
 			validateOnBlur={ true }
 			onSubmit={ onSubmit }
 			{ ...props }>
-			{ props=>children({ ...props }) }
+			{ props=>children({ ...props, }) }
 		</Formik>
 	);
 }

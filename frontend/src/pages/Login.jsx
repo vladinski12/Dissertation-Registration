@@ -1,19 +1,20 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography, } from '@mui/material';
 import FormikBase from '../components/templates/FormikBase';
-import { Link } from 'react-router-dom';
-import { loginSchema } from '../utils/yupSchemas.js';
-import { loginSubmitHandler } from '../utils/calls/authCalls.js';
+import { Link, } from 'react-router-dom';
+import { loginSchema, } from '../utils/yupSchemas.js';
+import { loginSubmitHandler, } from '../utils/calls/authCalls.js';
 import useAuth from '../state/hooks/useAuth.js';
+import { useCallback, } from 'react';
 
 export default function Login() {
-	const { setToken } = useAuth();
+	const { setToken, } = useAuth();
 
-	async function submitHandler(values, helpers) {
+	const submitHandler = useCallback(async (values, helpers) => {
 		const token = await loginSubmitHandler(values, helpers);
 		if (token) {
 			setToken(token);
 		}
-	}
+	}, []);
 
 	return (
 		<Box
@@ -30,7 +31,7 @@ export default function Login() {
 			<Typography
 				variant='h1'>Login</Typography>
 			<FormikBase
-				initialValues={{ email: '', password: '' }}
+				initialValues={{ email: '', password: '', }}
 				validationSchema={ loginSchema }
 				onSubmit={ submitHandler }
 			>
@@ -84,7 +85,7 @@ export default function Login() {
 						<Button
 							type='submit'
 							onClick={ handleSubmit }
-							sx={{ my: 2 }}>LOGIN</Button>
+							sx={{ my: 2, }}>LOGIN</Button>
 					</Box>
 				)}
 			</FormikBase>

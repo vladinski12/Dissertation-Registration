@@ -1,14 +1,14 @@
-import{ createContext, useCallback, useMemo, useReducer } from 'react';
-import { setDissertationRequests as setDissertationRequestsAction, setIsLoadingDissertationRequests as setIsLoadingDissertationRequestsAction } from '../../actions/dissertationRequestsActions';
+import { DissertationRequestStatus, dissertationRequestsInitialState, } from '../../../utils/constants';
+import{ createContext, useCallback, useMemo, useReducer, } from 'react';
+import { setDissertationRequests as setDissertationRequestsAction, setIsLoadingDissertationRequests as setIsLoadingDissertationRequestsAction, } from '../../actions/dissertationRequestsActions';
 import API from '../../../app/api';
-import { disserationRequestsInitialState } from '../../../utils/constants';
 import dissertationRequestsReducer from '../reducers/dissertationRequestsReducer';
-import { showToast } from '../../../components/templates/ToastMessage';
+import { showToast, } from '../../../components/templates/ToastMessage';
 
-export const DissertationRequestsContext = createContext({ context: disserationRequestsInitialState });
+export const DissertationRequestsContext = createContext({ context: dissertationRequestsInitialState, });
 
-const DissertationRequestsProvider = ({ children }) => {
-	const [context, dispatch] = useReducer(dissertationRequestsReducer, disserationRequestsInitialState);
+const DissertationRequestsProvider = ({ children, }) => {
+	const [context, dispatch] = useReducer(dissertationRequestsReducer, dissertationRequestsInitialState);
 
 	const getDissertationRequests = useCallback(async () => {
 		try {
@@ -20,7 +20,12 @@ const DissertationRequestsProvider = ({ children }) => {
 				},
 			});
 			if (response?.data) {
-				dispatch(setDissertationRequestsAction(response.data.DissertationRequests));
+				dispatch(setDissertationRequestsAction(response.data.DissertationRequests.filter(
+					(dissertationRequest) =>
+						dissertationRequest.status === DissertationRequestStatus.PENDING_APPROVAL ||
+						dissertationRequest.status === DissertationRequestStatus.APPROVED ||
+						dissertationRequest.status === DissertationRequestStatus.DECLINED
+				)));
 			}
 		} catch (error) {
 			showToast(error?.response?.data?.message, 'error');
@@ -45,7 +50,7 @@ const DissertationRequestsProvider = ({ children }) => {
 				}
 			);
 			if (response.status === 200) {
-				showToast('Disseration request approved successfully', 'success');
+				showToast('Dissertation request approved successfully', 'success');
 				getDissertationRequests();
 			}else{
 				showToast(response?.data?.message, 'warning');
@@ -74,7 +79,7 @@ const DissertationRequestsProvider = ({ children }) => {
 				}
 			);
 			if (response.status === 200) {
-				showToast('Disseration request declined successfully', 'success');
+				showToast('Dissertation request declined successfully', 'success');
 				getDissertationRequests();
 			}else{
 				showToast(response?.data?.message, 'warning');

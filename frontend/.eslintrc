@@ -1,6 +1,6 @@
 {
 	"root": true,
-	"env": { "browser": true, "es2020": true },
+	"env": { "browser": true, "es2021": true },
 	"extends": [
 		"eslint:recommended",
 		"plugin:react/recommended",
@@ -49,6 +49,16 @@
 		"indent": ["error", "tab", { "SwitchCase": 1 }],
 		"quotes": ["error", "single"],
 		"semi": ["error", "always"],
+		"comma-dangle": [
+			"error",
+			{
+				"arrays": "never",
+				"objects": "always",
+				"imports": "always",
+				"exports": "always",
+				"functions": "never"
+			}
+		],
 		"eqeqeq": ["error", "always"],
 		"no-var": ["error"],
 		"prefer-arrow-callback": ["error"],
@@ -103,6 +113,8 @@
 		"react/jsx-first-prop-new-line": ["error", "multiline"],
 		"react/jsx-max-props-per-line": ["error", { "maximum": 1 }],
 		"react/jsx-no-comment-textnodes": ["error"],
+		"react/jsx-no-bind": ["error"],
+		// "react/react-in-jsx-scope": ["error"],
 		"react/jsx-newline": [
 			"error",
 			{

@@ -4,11 +4,9 @@ import {
   HandleDissertationRequestValidateSchema,
 } from '../../utils/yup-schemas.js';
 import AuthMiddleware from '../../utils/middlewares/auth.middleware.js';
-import { MAX_FILE_SIZE } from '../../utils/env.js';
 import { RoleMiddleware } from '../../utils/middlewares/role.middleware.js';
 import UploadFile from '../../storage.js';
 import { UserRole } from '../../utils/constants.js';
-import ValidateFile from '../../utils/middlewares/file-validate.middleware.js';
 import ValidateSchema from '../../utils/middlewares/schema-validate.middleware.js';
 import express from 'express';
 
@@ -48,19 +46,25 @@ DissertationRouter.post(
   '/upload-dissertation-request/:dissertationRequestId',
   AuthMiddleware,
   RoleMiddleware([UserRole.STUDENT]),
-  ValidateFile(10, ['application/pdf']),
   UploadFile.single('file'),
   DissertationController.uploadDissertationRequest
 );
 
 DissertationRouter.post(
-  '/handle-uploaded-dissertation-request/:dissertationRequestId',
+  '/decline-dissertation-request/:dissertationRequestId',
   AuthMiddleware,
   RoleMiddleware([UserRole.PROFESSOR]),
   ValidateSchema(HandleDissertationRequestValidateSchema),
-  ValidateFile(MAX_FILE_SIZE, ['application/pdf']),
+  DissertationController.declineDissertationRequest
+);
+
+DissertationRouter.post(
+  '/upload-approved-dissertation-request/:dissertationRequestId',
+  AuthMiddleware,
+  RoleMiddleware([UserRole.PROFESSOR]),
   UploadFile.single('file'),
-  DissertationController.handleUploadedDissertationRequest
+  ValidateSchema(HandleDissertationRequestValidateSchema),
+  DissertationController.uploadApprovedDissertationRequest
 );
 
 export default DissertationRouter;

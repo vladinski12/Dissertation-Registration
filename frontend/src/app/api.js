@@ -1,4 +1,4 @@
-import { API_ROUTES } from './routes';
+import { API_ROUTES, } from './routes';
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
@@ -36,6 +36,24 @@ const API = {
 				API_ROUTES.dissertationRequests.handlePreliminaryDissertationRequest(
 					id
 				),
+				data,
+				options
+			),
+		uploadDissertationRequestFile: (id, data, options) =>
+			axiosInstance.post(
+				API_ROUTES.dissertationRequests.uploadDissertationRequestFile(id),
+				data,
+				options
+			),
+		declineDissertationRequest: (id, data, options) =>
+			axiosInstance.post(
+				API_ROUTES.dissertationRequests.declineDissertationRequest(id),
+				data,
+				options
+			),
+		uploadApprovedDissertationRequest: (id, data, options) =>
+			axiosInstance.post(
+				API_ROUTES.dissertationRequests.uploadApprovedDissertationRequest(id),
 				data,
 				options
 			),

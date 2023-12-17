@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { UserRoleArray } from './constants';
+import { UserRoleArray, } from './constants';
 
 export const loginSchema = yup.object().shape({
 	email: yup

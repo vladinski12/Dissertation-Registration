@@ -1,17 +1,18 @@
-import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Box, Button, MenuItem, TextField, Typography, } from '@mui/material';
+import { Link, useNavigate, } from 'react-router-dom';
 import FormikBase from '../components/templates/FormikBase';
-import { UserRole } from '../utils/constants.js';
-import { registerSchema } from '../utils/yupSchemas.js';
-import {  registerSubmitHandler } from '../utils/calls/authCalls.js';
+import { UserRole, } from '../utils/constants.js';
+import { registerSchema, } from '../utils/yupSchemas.js';
+import {  registerSubmitHandler, } from '../utils/calls/authCalls.js';
+import { useCallback, } from 'react';
 
 export default function Register() {
 	const navigate = useNavigate();
 
-	async function submitHandler(values, helpers) {
+	const submitHandler = useCallback(async (values, helpers) => {
 		delete values.confirmPassword;
 		if(await registerSubmitHandler(values, helpers)) navigate('/login');
-	}
+	}, []);
 
 	return (
 		<Box
@@ -26,10 +27,10 @@ export default function Register() {
 			}}
 		>
 			<Typography
-				sx={{ my: 5 }}
+				sx={{ my: 5, }}
 				variant='h1'>Register</Typography>
 			<FormikBase
-				initialValues={{ name: '', email: '', userRole: '', password: '', confirmPassword: '' }}
+				initialValues={{ name: '', email: '', userRole: '', password: '', confirmPassword: '', }}
 				validationSchema={ registerSchema }
 				onSubmit={ submitHandler }
 			>
@@ -126,7 +127,7 @@ export default function Register() {
 						<Button
 							type='submit'
 							onClick={ handleSubmit }
-							sx={{ my: 2 }}>REGISTER</Button>
+							sx={{ my: 2, }}>REGISTER</Button>
 					</Box>
 				)}
 			</FormikBase>
