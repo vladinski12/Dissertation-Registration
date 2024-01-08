@@ -59,6 +59,9 @@ export default function Login() {
 						autoComplete='on'
 					>
 						<TextField
+							sx={{
+								width: '100%',
+							}}
 							id='email'
 							label='Email'
 							variant='outlined'
@@ -71,6 +74,9 @@ export default function Login() {
 							helperText={ touched.email && errors.email }
 						></TextField>
 						<TextField
+							sx={{
+								width: '100%',
+							}}
 							id='password'
 							label='Password'
 							variant='outlined'
@@ -89,7 +95,9 @@ export default function Login() {
 					</Box>
 				)}
 			</FormikBase>
-			<Link to='/register'>Register</Link>
+			<Box sx={{ my: 2, }}>
+				<Link to='/register'>Register</Link>
+			</Box>
 		</Box>
 	);
 }

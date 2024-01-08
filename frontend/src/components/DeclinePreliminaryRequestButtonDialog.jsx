@@ -15,7 +15,7 @@ export default function DeclinePreliminaryRequestButtonDialog({ dissertationRequ
 		}
 		declineDissertationRequest(dissertationRequest.id, declinedReason);
 		setOpen(false);
-	}, []);
+	}, [declinedReason]);
 
 	const handleClickOpen = useCallback(() => {
 		setOpen(true);

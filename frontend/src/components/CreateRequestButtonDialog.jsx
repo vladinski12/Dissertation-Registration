@@ -9,7 +9,7 @@ const CreateRequestButtonDialog = ({ professor, }) => {
 	const [studentMessage, setStudentMessage] = useState('');
 
 	const createRequest = useCallback(async () => {
-		if (!studentMessage.trim() || studentMessage.trim().length < 10 || studentMessage.trim().length > 255) {
+		if (studentMessage.trim() === '' || studentMessage.trim().length < 10 || studentMessage.trim().length > 255) {
 			showToast('Please enter a message more than 10 and less than 255 characters', 'warning');
 			return;
 		}
@@ -35,8 +35,9 @@ const CreateRequestButtonDialog = ({ professor, }) => {
 			showToast(error?.response?.data?.message, 'error');
 		}finally{
 			setOpen(false);
+			setStudentMessage('');
 		}
-	}, []);
+	}, [studentMessage]);
 
 	const handleClickOpen = useCallback(() => {
 		setOpen(true);

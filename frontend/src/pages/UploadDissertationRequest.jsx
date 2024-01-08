@@ -56,110 +56,134 @@ const UploadDissertationRequest = () => {
 		})();
 	}, []);
 
-	const handleFileChange = useCallback(async (event) => {
-		try {
+	const handleFileChange = useCallback(
+		async (event) => {
 			const file = event.target.files[0];
-			if (!file || file.type !== 'application/pdf' || file.size > 1000000) {
+			if (!file || file.type !== 'application/pdf' || file.size > 10000000) {
 				showToast('File must be a pdf and have a size less than 1MB', 'error');
 				return;
 			}
-			const formData = new FormData();
-			formData.append('file', file);
-			const response =
-				await API.dissertationRequests.uploadDissertationRequestFile(
-					dissertationRequest?.id,
-					formData,
-					{
-						headers: {
-							'Content-Type': 'multipart/form-data',
-							Authorization: `Bearer ${localStorage.getItem('token')}`,
-						},
-					}
-				);
-			if (response?.data) {
-				showToast(response.data.message, 'success');
+			try {
+				const formData = new FormData();
+				formData.append('file', file);
+				const response =
+					await API.dissertationRequests.uploadDissertationRequestFile(
+						dissertationRequest?.id,
+						formData,
+						{
+							headers: {
+								'Content-Type': 'multipart/form-data',
+								Authorization: `Bearer ${localStorage.getItem('token')}`,
+							},
+						}
+					);
+				if (response?.data) {
+					showToast(response.data.message, 'success');
+				}
+			} catch (error) {
+				showToast(error?.response?.data?.message, 'error');
+			} finally {
+				window.location.reload();
 			}
-		} catch (error) {
-			showToast(error?.response?.data?.message, 'error');
-		} finally {
-			window.location.reload();
-		}
-	}, []);
+		},
+		[dissertationRequest]
+	);
 
-	return (
-		<Container
-			sx={{
-				my: 5,
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'center',
-				alignItems: 'center',
-				gap: '4rem',
-			}}
-		>
-			<Box
+	if (!dissertationRequest) {
+		return (
+			<Container
 				sx={{
-					textAlign: 'center',
+					my: 5,
 					display: 'flex',
 					flexDirection: 'column',
 					justifyContent: 'center',
 					alignItems: 'center',
+					gap: '4rem',
 				}}
 			>
 				<Typography variant='h4'>Upload Dissertation Request</Typography>
-				<Typography
-					sx={{ maxWidth: '50rem', }}
-					variant='h6'>
-					Your dissertation request was {dissertationRequest?.status === DissertationRequestStatus.APPROVED_REJECTED ? 'rejected' : 'approved'} by professor{' '}
-					{dissertationRequest?.professor.user.name} on{' '}
-					{formatDate(dissertationRequest?.updatedAt)}
+				<Typography variant='h6'>
+					You don&apos;t have an approved dissertation request
 				</Typography>
-				<ApprovedDissertationRequestStatusChip
-					status={ dissertationRequest?.status }
-					tooltipDirection ='bottom'
-				/>
-			</Box>
-			<Paper
+			</Container>
+		);
+	} else
+		return (
+			<Container
 				sx={{
-					borderRadius: '50%',
-					':hover': {
-						boxShadow: '0 0 0 0.5rem rgba(0, 123, 255, .5)',
-						transform: 'scale(1.05)',
-						transition: 'transform .5s',
-					},
+					my: 5,
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'center',
+					alignItems: 'center',
+					gap: '4rem',
 				}}
-				square={ false }
-				elevation={ 24 }
 			>
-				<PictureAsPdfIcon
+				<Box
 					sx={{
-						fontSize: '10rem',
-						margin: '2rem',
-						color: 'primary.main',
+						textAlign: 'center',
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'center',
+						alignItems: 'center',
 					}}
-				/>
-			</Paper>
-			<Button
-				component='label'
-				variant='contained'
-				startIcon={ <CloudUploadIcon/> }
-			>
-				Upload file
-				<VisuallyHiddenInput
-					disabled={
-						dissertationRequest?.status !==
-							DissertationRequestStatus.APPROVED &&
-						dissertationRequest?.status !==
-							DissertationRequestStatus.APPROVED_REJECTED
-					}
-					type='file'
-					onChange={  handleFileChange }
-					accept='application/pdf'
-				/>
-			</Button>
-			<Typography variant='h8'>Only pdf files are accepted</Typography>
-		</Container>
-	);
+				>
+					<Typography variant='h4'>Upload Dissertation Request</Typography>
+					<Typography
+						sx={{ maxWidth: '50rem', }}
+						variant='h6'>
+						Your dissertation request was{' '}
+						{dissertationRequest?.status ===
+						DissertationRequestStatus.APPROVED_REJECTED
+							? 'rejected'
+							: 'approved'}{' '}
+						by professor {dissertationRequest?.professor.user.name} on{' '}
+						{formatDate(dissertationRequest?.updatedAt)}
+					</Typography>
+					<ApprovedDissertationRequestStatusChip
+						status={ dissertationRequest?.status }
+						tooltipDirection='bottom'
+					/>
+				</Box>
+				<Paper
+					sx={{
+						borderRadius: '50%',
+						':hover': {
+							boxShadow: '0 0 0 0.5rem rgba(0, 123, 255, .5)',
+							transform: 'scale(1.05)',
+							transition: 'transform .5s',
+						},
+					}}
+					square={ false }
+					elevation={ 24 }
+				>
+					<PictureAsPdfIcon
+						sx={{
+							fontSize: '10rem',
+							margin: '2rem',
+							color: 'primary.main',
+						}}
+					/>
+				</Paper>
+				{dissertationRequest?.status === DissertationRequestStatus.APPROVED && (
+					<>
+						<Button
+							component='label'
+							variant='contained'
+							startIcon={ <CloudUploadIcon/> }
+						>
+							Upload file
+							<VisuallyHiddenInput
+								type='file'
+								onChange={ handleFileChange }
+								accept='application/pdf'
+							/>
+						</Button>
+						<Typography variant='h8'>Only pdf files are accepted</Typography>
+					</>
+				)}
+			</Container>
+		);
 };
 
 export default UploadDissertationRequest;

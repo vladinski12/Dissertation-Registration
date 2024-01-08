@@ -3,7 +3,7 @@ import { Link, useNavigate, } from 'react-router-dom';
 import FormikBase from '../components/templates/FormikBase';
 import { UserRole, } from '../utils/constants.js';
 import { registerSchema, } from '../utils/yupSchemas.js';
-import {  registerSubmitHandler, } from '../utils/calls/authCalls.js';
+import { registerSubmitHandler, } from '../utils/calls/authCalls.js';
 import { useCallback, } from 'react';
 
 export default function Register() {
@@ -11,7 +11,7 @@ export default function Register() {
 
 	const submitHandler = useCallback(async (values, helpers) => {
 		delete values.confirmPassword;
-		if(await registerSubmitHandler(values, helpers)) navigate('/login');
+		if (await registerSubmitHandler(values, helpers)) navigate('/login');
 	}, []);
 
 	return (
@@ -28,9 +28,17 @@ export default function Register() {
 		>
 			<Typography
 				sx={{ my: 5, }}
-				variant='h1'>Register</Typography>
+				variant='h1'>
+				Register
+			</Typography>
 			<FormikBase
-				initialValues={{ name: '', email: '', userRole: '', password: '', confirmPassword: '', }}
+				initialValues={{
+					name: '',
+					email: '',
+					userRole: '',
+					password: '',
+					confirmPassword: '',
+				}}
 				validationSchema={ registerSchema }
 				onSubmit={ submitHandler }
 			>
@@ -41,7 +49,6 @@ export default function Register() {
 					handleBlur,
 					handleChange,
 					handleSubmit,
-
 				}) => (
 					<Box
 						component='form'
@@ -59,6 +66,9 @@ export default function Register() {
 						autoComplete='on'
 					>
 						<TextField
+							sx={{
+								width: '100%',
+							}}
 							id='name'
 							label='Name'
 							variant='outlined'
@@ -71,6 +81,9 @@ export default function Register() {
 							helperText={ touched.name && errors.name }
 						/>
 						<TextField
+							sx={{
+								width: '100%',
+							}}
 							id='email'
 							label='Email'
 							variant='outlined'
@@ -96,11 +109,16 @@ export default function Register() {
 						>
 							<MenuItem
 								value={ '' }
-								disabled>Select an option</MenuItem>
+								disabled>
+								Select an option
+							</MenuItem>
 							<MenuItem value={ UserRole.STUDENT }>Student</MenuItem>
 							<MenuItem value={ UserRole.PROFESSOR }>Professor</MenuItem>
 						</TextField>
 						<TextField
+							sx={{
+								width: '100%',
+							}}
 							id='password'
 							label='Password'
 							variant='outlined'
@@ -113,6 +131,9 @@ export default function Register() {
 							helperText={ touched.password && errors.password }
 						/>
 						<TextField
+							sx={{
+								width: '100%',
+							}}
 							id='confirmPassword'
 							label='Confirm Password'
 							variant='outlined'
@@ -127,11 +148,15 @@ export default function Register() {
 						<Button
 							type='submit'
 							onClick={ handleSubmit }
-							sx={{ my: 2, }}>REGISTER</Button>
+							sx={{ my: 2, }}>
+							REGISTER
+						</Button>
 					</Box>
 				)}
 			</FormikBase>
-			<Link to='/login'>Login</Link>
+			<Box sx={{ my: 2, }}>
+				<Link to='/login'>Login</Link>
+			</Box>
 		</Box>
 	);
 }

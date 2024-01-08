@@ -44,7 +44,7 @@ export async function createDissertationRequest(
     ).length > 0
   ) {
     throw new HttpException(
-      'Student already has declined dissertation request',
+      'Student already has a declined dissertation request by this professor',
       400
     );
   }
@@ -65,7 +65,7 @@ export async function createDissertationRequest(
   const existingDissertationRequest =
     await Prisma.dissertationRequests.findFirst({
       where: {
-        studentId,
+        studentId: student.id,
         professorId,
       },
     });

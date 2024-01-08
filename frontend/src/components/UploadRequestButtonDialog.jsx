@@ -35,13 +35,14 @@ export default function UploadRequestButtonDialog({ dissertationRequest, }) {
 
 	const handleFileChange = useCallback((event) => {
 		const file = event.target.files[0];
-		if (!file || file.type !== 'application/pdf' || file.size > 1000000) {
+		if (!file || file.type !== 'application/pdf' || file.size > 10000000) {
 			showToast('File must be a pdf and have a size less than 1MB', 'error');
 			return;
 		}
 		uploadFileAndApprove(dissertationRequest.id, file);
 		setOpen(false);
-	}, []);
+		window.location.reload();
+	}, [dissertationRequest]);
 
 	const handleClickOpen = useCallback(() => {
 		setOpen(true);
