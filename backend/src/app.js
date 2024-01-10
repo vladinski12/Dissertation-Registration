@@ -11,7 +11,7 @@ import morgan from 'morgan';
 import path from 'path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
+console.log(path.join(__dirname, '..', 'public'));
 //* INITIALIZATIONS
 const app = express();
 app.use(morgan('dev'));
@@ -20,7 +20,7 @@ app.use(helmet());
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/storage', express.static(path.join(__dirname, '..', 'public')));
 
 //* ROUTES
 app.use('/api', Router);
@@ -29,15 +29,15 @@ app.get('/', (_req, res) => {
   res.send('API is running...');
 });
 
+//* STARTING THE SERVER
+app.listen(PORT, () => {
+  console.log(`App listening at http://localhost:${PORT}`);
+  console.log('Press Ctrl+C to quit.');
+});
+
 //* HANDLING ERRORS
 app.use(() => {
   throw new HttpException('Not found', 404);
 });
 
 app.use(ErrorMiddleware);
-
-//* STARTING THE SERVER
-app.listen(PORT, () => {
-  console.log(`App listening at http://localhost:${PORT}`);
-  console.log('Press Ctrl+C to quit.');
-});

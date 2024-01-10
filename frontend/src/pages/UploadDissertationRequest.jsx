@@ -1,10 +1,11 @@
-import { Box, Button, Container, Paper, Typography, } from '@mui/material';
-import { useCallback, useEffect, useState, } from 'react';
+import { Box, Button, Container, Typography, } from '@mui/material';
+import { useCallback, useContext, useEffect, useState, } from 'react';
 import API from '../app/api';
 import ApprovedDissertationRequestStatusChip from '../components/ApprovedDissertationRequestStatusChip';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { Context, } from '../state/context/GlobalContext/Context';
 import { DissertationRequestStatus, } from '../utils/constants';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import OpenFileContainer from '../components/OpenFileContainer';
 import { formatDate, } from '../utils/dateHelpers';
 import { showToast, } from '../components/templates/ToastMessage';
 import { styled, } from '@mui/material/styles';
@@ -22,6 +23,10 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const UploadDissertationRequest = () => {
+	const {
+		context: { role, },
+	} = useContext(Context);
+
 	const [dissertationRequest, setDissertationRequest] = useState(null);
 
 	useEffect(() => {
@@ -145,26 +150,9 @@ const UploadDissertationRequest = () => {
 						tooltipDirection='bottom'
 					/>
 				</Box>
-				<Paper
-					sx={{
-						borderRadius: '50%',
-						':hover': {
-							boxShadow: '0 0 0 0.5rem rgba(0, 123, 255, .5)',
-							transform: 'scale(1.05)',
-							transition: 'transform .5s',
-						},
-					}}
-					square={ false }
-					elevation={ 24 }
-				>
-					<PictureAsPdfIcon
-						sx={{
-							fontSize: '10rem',
-							margin: '2rem',
-							color: 'primary.main',
-						}}
-					/>
-				</Paper>
+				<OpenFileContainer
+					role={ role }
+					dissertationRequest={ dissertationRequest }/>
 				{dissertationRequest?.status === DissertationRequestStatus.APPROVED && (
 					<>
 						<Button

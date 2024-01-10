@@ -150,6 +150,16 @@ export async function getDissertationRequests(userId) {
                 },
               },
             },
+            studentFile: {
+              select: {
+                filename: true,
+              },
+            },
+            professorFile: {
+              select: {
+                filename: true,
+              },
+            },
           },
         },
       },
@@ -182,6 +192,16 @@ export async function getDissertationRequests(userId) {
                     name: true,
                   },
                 },
+              },
+            },
+            studentFile: {
+              select: {
+                filename: true,
+              },
+            },
+            professorFile: {
+              select: {
+                filename: true,
               },
             },
           },
@@ -230,6 +250,11 @@ export async function getApprovedDissertationRequests(userId) {
                   name: true,
                 },
               },
+            },
+          },
+          professorFile: {
+            select: {
+              filename: true,
             },
           },
         },

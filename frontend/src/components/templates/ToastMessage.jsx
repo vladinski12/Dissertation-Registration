@@ -3,7 +3,7 @@ import { ToastContainer, toast, } from 'react-toastify';
 import { useEffect, } from 'react';
 
 const toastConfig = {
-	position: 'top-right',
+	position: 'bottom-left',
 	autoClose: 5000,
 	hideProgressBar: false,
 	closeOnClick: true,
