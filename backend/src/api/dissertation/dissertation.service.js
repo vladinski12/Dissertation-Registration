@@ -257,6 +257,11 @@ export async function getApprovedDissertationRequests(userId) {
               filename: true,
             },
           },
+          studentFile: {
+            select: {
+              filename: true,
+            },
+          },
         },
       },
     },

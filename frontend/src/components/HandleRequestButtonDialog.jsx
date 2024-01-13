@@ -1,12 +1,12 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tooltip, } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip, } from '@mui/material';
 import  { useCallback, useContext, useState, } from 'react';
 import { ApprovedDissertationRequestsContext, } from '../state/context/ApprovedDissertationRequestsContext/ApprovedDissertationRequestsContext';
 import CloseIcon from '@mui/icons-material/Close';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import MessageIcon from '@mui/icons-material/Message';
 import UploadRequestButtonDialog from './UploadRequestButtonDialog';
 
 export default function HandleRequestButtonDialog({ dissertationRequest, }){
-
 	const { declineRequest, } = useContext(ApprovedDissertationRequestsContext);
 
 	const [open, setOpen] = useState(false);
@@ -22,6 +22,10 @@ export default function HandleRequestButtonDialog({ dissertationRequest, }){
 	const handleDecline = useCallback(() => {
 		declineRequest(dissertationRequest.id);
 		setOpen(false);
+	}, []);
+
+	const handleOpenFileClick = useCallback((location)=>()=>{
+		window.open(`${import.meta.env.VITE_PDF_STORAGE_URL}${dissertationRequest[location].filename}`, '_blank');
 	}, []);
 
 	return (<>
@@ -54,10 +58,22 @@ export default function HandleRequestButtonDialog({ dissertationRequest, }){
 					<CloseIcon/>
 				</IconButton>
 			</Tooltip>
-			<DialogContent>
-				<DialogContentText>
-					{dissertationRequest.studentMessage}
-				</DialogContentText>
+			<DialogContent
+				sx={
+					{
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'center',
+						alignItems: 'center',
+						gap: '4rem',
+					}
+				}>
+				<Button
+					component='label'
+					variant='contained'
+					startIcon={ <CloudUploadIcon/> }
+					onClick={ handleOpenFileClick('studentFile') }
+				>Student File</Button>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={ handleDecline }>Decline</Button>

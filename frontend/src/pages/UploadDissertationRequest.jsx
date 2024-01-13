@@ -153,7 +153,7 @@ const UploadDissertationRequest = () => {
 				<OpenFileContainer
 					role={ role }
 					dissertationRequest={ dissertationRequest }/>
-				{dissertationRequest?.status === DissertationRequestStatus.APPROVED && (
+				{(dissertationRequest?.status === DissertationRequestStatus.APPROVED || dissertationRequest?.status === DissertationRequestStatus.APPROVED_REJECTED) && (
 					<>
 						<Button
 							component='label'

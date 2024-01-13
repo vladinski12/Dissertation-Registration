@@ -154,7 +154,7 @@ export default function Register() {
 					</Box>
 				)}
 			</FormikBase>
-			<Box sx={{ my: 2, }}>
+			<Box sx={{ m: 2, }}>
 				<Link to='/login'>Login</Link>
 			</Box>
 		</Box>
