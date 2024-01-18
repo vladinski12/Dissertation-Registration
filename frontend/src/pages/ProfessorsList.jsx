@@ -23,7 +23,7 @@ const ProfessorsList = () => {
 					setProfessors(response.data);
 				}
 			} catch (error) {
-				showToast(error?.response?.data?.message, 'error');
+				showToast(error?.response?.data?.message || error?.message, 'error');
 			}
 		})();
 	}, []);

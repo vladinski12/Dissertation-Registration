@@ -56,7 +56,7 @@ const UploadDissertationRequest = () => {
 					);
 				}
 			} catch (error) {
-				showToast(error?.response?.data?.message, 'error');
+				showToast(error?.response?.data?.message || error?.message, 'error');
 			}
 		})();
 	}, []);
@@ -86,7 +86,7 @@ const UploadDissertationRequest = () => {
 					showToast(response.data.message, 'success');
 				}
 			} catch (error) {
-				showToast(error?.response?.data?.message, 'error');
+				showToast(error?.response?.data?.message || error?.message, 'error');
 			} finally {
 				window.location.reload();
 			}

@@ -23,7 +23,7 @@ const ApprovedDissertationRequestsProvider = ({ children, }) => {
 				dispatch(setApprovedDissertationRequestsAction(response.data));
 			}
 		} catch (error) {
-			showToast(error?.response?.data?.message, 'error');
+			showToast(error?.response?.data?.message || error?.message, 'error');
 		}finally{
 			setIsLoading(false);
 		}
@@ -48,7 +48,7 @@ const ApprovedDissertationRequestsProvider = ({ children, }) => {
 				showToast('Dissertation request approved', 'success');
 			}
 		} catch (error) {
-			showToast(error?.response?.data?.message, 'error');
+			showToast(error?.response?.data?.message || error?.message, 'error');
 			getApprovedDissertationRequests();
 		}
 		finally{
@@ -79,7 +79,7 @@ const ApprovedDissertationRequestsProvider = ({ children, }) => {
 				getApprovedDissertationRequests();
 			}
 		} catch (error) {
-			showToast(error?.response?.data?.message, 'error');
+			showToast(error?.response?.data?.message || error?.message, 'error');
 		}finally{
 			setIsLoading(false);
 		}

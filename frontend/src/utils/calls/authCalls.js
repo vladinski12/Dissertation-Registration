@@ -13,7 +13,7 @@ export const loginSubmitHandler = async (values, helpers) => {
 		if (err?.response?.status === 400) {
 			return helpers.setFieldError('password', 'Invalid login credentials');
 		}
-		showToast(err?.response?.data?.message, 'error');
+		showToast(err?.response?.data?.message || err?.message, 'error');
 	}
 };
 
@@ -22,7 +22,7 @@ export const registerSubmitHandler = async (values, helpers) => {
 		const response = await API.auth.register(values, {
 			headers: { 'Content-Type': 'application/json', },
 		});
-		if(response?.status === 200) {
+		if (response?.status === 200) {
 			showToast('Registration successful', 'success');
 			return true;
 		}
@@ -30,6 +30,6 @@ export const registerSubmitHandler = async (values, helpers) => {
 		if (err?.response?.status === 400) {
 			return helpers.setFieldError('email', 'Email already exists');
 		}
-		showToast(err?.response?.data?.message, 'error');
+		showToast(err?.response?.data?.message || err?.message, 'error');
 	}
 };

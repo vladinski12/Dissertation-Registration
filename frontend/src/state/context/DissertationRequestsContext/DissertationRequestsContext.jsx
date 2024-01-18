@@ -28,7 +28,7 @@ const DissertationRequestsProvider = ({ children, }) => {
 				)));
 			}
 		} catch (error) {
-			showToast(error?.response?.data?.message, 'error');
+			showToast(error?.response?.data?.message || error?.message, 'error');
 		}finally{
 			setIsLoading(false);
 		}
@@ -56,7 +56,7 @@ const DissertationRequestsProvider = ({ children, }) => {
 				showToast(response?.data?.message, 'warning');
 			}
 		} catch (error) {
-			showToast(error?.response?.data?.message, 'error');
+			showToast(error?.response?.data?.message || error?.message, 'error');
 		}finally{
 			setIsLoading(false);
 		}
@@ -85,7 +85,7 @@ const DissertationRequestsProvider = ({ children, }) => {
 				showToast(response?.data?.message, 'warning');
 			}
 		} catch (error) {
-			showToast(error?.response?.data?.message, 'error');
+			showToast(error?.response?.data?.message || error?.message, 'error');
 		}finally{
 			setIsLoading(false);
 		}

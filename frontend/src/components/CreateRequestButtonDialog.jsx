@@ -32,7 +32,7 @@ const CreateRequestButtonDialog = ({ professor, }) => {
 				showToast(response?.data?.message, 'warning');
 			}
 		} catch (error) {
-			showToast(error?.response?.data?.message, 'error');
+			showToast(error?.response?.data?.message || error?.message, 'error');
 		}finally{
 			setOpen(false);
 			setStudentMessage('');
